@@ -7,12 +7,12 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="learnMBTI">
 <meta property="og:title" content="learnMBTI · 孩子学习人格测试">
-<meta property="og:description" content="16 型学习人格 × 8 大学科交叉报告，附选科建议与 7 天任务卡打卡闭环。">
+<meta property="og:description" content="16 型学习人格 × 8 大学科交叉报告，附选科建议与 7 天陪学方案打卡闭环。">
 <meta property="og:url" content="https://lj22503.github.io/learnMBTI/">
 <meta property="og:image" content="https://lj22503.github.io/learnMBTI/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="learnMBTI · 孩子学习人格测试">
-<meta name="twitter:description" content="16 型学习人格 × 8 大学科交叉报告，附选科建议与 7 天任务卡打卡闭环。">
+<meta name="twitter:description" content="16 型学习人格 × 8 大学科交叉报告，附选科建议与 7 天陪学方案打卡闭环。">
 <meta name="twitter:image" content="https://lj22503.github.io/learnMBTI/og-image.png">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -42,6 +42,18 @@
   .btn.small { font-size: 17px; padding: 13px 32px; letter-spacing: 1px; }
   .btn-row { display: flex; justify-content: center; gap: 18px; margin-top: 40px; flex-wrap: wrap; }
   .footer-note { margin-top: 30px; text-align: center; font-size: 14px; color: #b0b8c4; }
+  /* 分享卡与解锁区（v1.4） */
+  .share-foot { margin-top: 22px; text-align: center; font-size: 14px; color: #b0b8c4; }
+  .share-foot a.ghost-link { color: #9ca3af; text-decoration: underline; cursor: pointer; margin: 0 6px; }
+  .sc-card { margin: 36px auto 0; max-width: 420px; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 20px; padding: 28px 24px 22px; text-align: center; box-shadow: 0 16px 40px rgba(79,70,229,.12); }
+  .sc-head .badge { justify-content: center; }
+  .sc-name { margin-top: 14px; font-size: 30px; font-weight: 800; color: #111827; }
+  .sc-traits { margin-top: 8px; font-size: 15px; color: #6b7280; }
+  .sc-line { margin-top: 12px; font-size: 16px; color: #4f46e5; line-height: 1.7; }
+  .sc-qr { width: 168px; height: 168px; margin: 24px auto 0; display: block; }
+  .sc-qr-tip { margin-top: 10px; font-size: 13px; color: #9ca3af; }
+  .sc-hint { margin-top: 18px; text-align: center; font-size: 15px; color: #6b7280; }
+  .tc-congrats { margin: 0 0 18px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7; }
 
   /* 首页 */
   .home { min-height: 1120px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
@@ -381,36 +393,57 @@
     </div>
   </div>
 
-  <!-- 档案钩子（③） -->
+  <!-- 解锁区：单一动作 = 生成分享卡，分享后解锁 7 天陪学方案包（家长视角：奖励，不是任务） -->
   <div class="archive-block">
-    <div class="a-title">把报告变成每天能做的事</div>
-    <div class="a-sub">保存档案可随时回来对比复测；也可以领一张「7 天任务卡」，按孩子的学习人格把每天怎么陪安排明白。</div>
+    <div class="a-title">7 天陪学方案包，已为孩子备好</div>
+    <div class="a-sub">生成一张专属分享卡，把孩子的学习人格和 7 天陪学方案一起带回家。分享给同样关心孩子学习的家长，即可解锁完整方案包。</div>
     <div class="btn-row">
-      <a class="btn" onclick="openTaskCards()">领取 7 天任务卡</a>
-      <a class="btn small" id="rSaveBtn" onclick="saveArchive()">保存档案</a>
-      <a class="btn ghost" onclick="retest()">重新测试</a>
+      <a class="btn" onclick="openShareCard()">生成分享卡 · 解锁 7 天方案包</a>
     </div>
+    <div class="share-foot"><a class="ghost-link" onclick="saveArchive()">保存档案</a><span>·</span><a class="ghost-link" onclick="retest()">重新测试</a></div>
   </div>
-
-  <div class="share-row"><a class="btn" onclick="alert('分享卡将在这里生成称号海报')">分享这份报告</a></div>
   <div class="footer-note">learnMBTI · 报告仅供家长参考，不构成教育诊断</div>
 </section>
 
-<!-- 屏4 7 天任务卡（v1.3：16 型×学科交叉生成，打卡 localStorage 持久化） -->
+<!-- 屏4.5 分享卡：生成带项目二维码的分享页，分享后解锁 7 天陪学方案包 -->
+<section id="sharecard" class="screen sharecard hidden">
+  <div class="quiz-top">
+    <div class="brand"><span class="dot"></span>learnMBTI</div>
+    <div class="counter" style="color:#9ca3af">分享卡</div>
+  </div>
+  <div class="sc-card">
+    <div class="sc-head">
+      <div class="badge"><div class="code" id="scCode"></div><div class="small">学习人格</div></div>
+      <div class="sc-name" id="scName"></div>
+      <div class="traits" id="scTraits"></div>
+      <p class="sc-line" id="scLine"></p>
+    </div>
+    <img class="sc-qr" src="qr-learnmbti.png" alt="learnMBTI 二维码">
+    <div class="sc-qr-tip">扫一扫，给孩子也测一份</div>
+  </div>
+  <div class="sc-hint">长按卡片保存图片，把这份学习方案带回家</div>
+  <div class="btn-row">
+    <a class="btn" onclick="unlockPlan()">我分享好了，解锁 7 天方案包</a>
+  </div>
+  <div class="footer-note">learnMBTI · 分享即解锁，给孩子一份专属陪学方案</div>
+</section>
+
+<!-- 屏4 7 天陪学方案（v1.3：16 型×学科交叉生成，打卡 localStorage 持久化） -->
 <section id="taskcards" class="screen taskcards hidden">
   <div class="quiz-top">
     <div class="brand"><span class="dot"></span>learnMBTI</div>
-    <div class="counter" style="color:#9ca3af">7 天任务卡</div>
+    <div class="counter" style="color:#9ca3af">7 天陪学方案</div>
   </div>
+  <div class="tc-congrats hidden" id="tcCongrats">恭喜你！已为孩子解锁 7 天陪学方案包。接下来每天照着方案陪 TA 一小会儿，TA 会越来越顺。</div>
   <div class="tc-head">
-    <div class="tc-kicker">7-DAY CHALLENGE</div>
+    <div class="tc-kicker">7-DAY PLAN</div>
     <div class="tc-title" id="tcTitle"></div>
     <div class="tc-sub" id="tcSub"></div>
   </div>
   <div class="tc-progress" id="tcProgress"><b>0</b> / 7 天</div>
   <div class="tc-list" id="tcList"></div>
   <div class="tc-bottom">
-    <div class="tc-done-banner hidden" id="tcDone">7 天全部打卡完成！这份坚持值得记进成长档案。明天可以再来一轮新的 7 天任务。</div>
+    <div class="tc-done-banner hidden" id="tcDone">7 天方案全部完成！这份坚持值得记进成长档案。明天可以再领一轮新的陪学方案。</div>
     <div class="btn-row">
       <a class="btn ghost" onclick="closeTaskCards()">返回报告</a>
       <a class="btn" id="tcReset" onclick="resetTaskCards()">重置打卡</a>
@@ -955,12 +988,7 @@ function renderResult(code, r) {
     methodBox.classList.add("hidden");
   }
 
-  /* ③ 档案钩子：保存 / 复测（localStorage 模拟） */
-  var saveBtn = document.getElementById("rSaveBtn");
-  saveBtn.textContent = "保存档案";
-  saveBtn.onclick = function () { saveArchive(code, firstSub); };
-
-  /* ③+ 记录当前结果，供「领取 7 天任务卡」使用 */
+  /* ③ 记录当前结果，供解锁方案包 / 复测使用 */
   lastResult = { code: code, sub: firstSub };
 }
 
@@ -975,10 +1003,7 @@ function saveArchive(code, subKey) {
   try { list = JSON.parse(localStorage.getItem("learnMBTI_archives") || "[]"); } catch (e) { list = []; }
   list.push(rec);
   localStorage.setItem("learnMBTI_archives", JSON.stringify(list));
-  var btn = document.getElementById("rSaveBtn");
-  btn.textContent = "已保存 ✓";
-  btn.style.background = "#10b981";
-  alert("已存入本机档案（localStorage）。可随时回来复测对比。");
+  alert("已存入本机档案，可随时回来复测对比。");
 }
 function retest() {
   if (confirm("重新测试将清空本次作答，确定开始吗？")) {
@@ -1147,6 +1172,26 @@ if (location.search.indexOf("diag") !== -1 || location.hash.indexOf("diag") !== 
     box.textContent = diag + "\n" + overflowEls.join(";") + (hotShort.length ? "\nhotLT44: " + hotShort.join(";") : "");
     document.body.appendChild(box);
   }, 300);
+}
+
+/* ===== 分享卡（v1.4）：单一动作 = 生成分享卡 → 分享后解锁 7 天陪学方案包 ===== */
+function openShareCard() {
+  var code = document.getElementById("rCode").textContent;
+  var t = TYPES[code.slice(0, 2) + "_" + code.slice(2)];
+  document.getElementById("scCode").textContent = code;
+  document.getElementById("scName").textContent = t.name;
+  document.getElementById("scTraits").textContent = document.getElementById("rTraits").textContent;
+  document.getElementById("scLine").textContent = document.getElementById("rSummary").textContent;
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("sharecard").classList.remove("hidden");
+  if (window.LMT) { window.LMT.track("share_card_view", { code: code }); }
+}
+function unlockPlan() {
+  try { localStorage.setItem("learnMBTI_unlocked", "1"); } catch (e) {}
+  document.getElementById("tcCongrats").classList.remove("hidden");
+  document.getElementById("sharecard").classList.add("hidden");
+  openTaskCards();
+  if (window.LMT) { window.LMT.track("plan_unlocked", {}); }
 }
 </script>
 <!-- ===== learnMBTI 访问统计与事件埋点 ===== -->

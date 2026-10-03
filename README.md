@@ -1,3 +1,14 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: 1c835e55ba3b06878e6538b2edadf703_886c1827beff11f18019525400248c00
+    ReservedCode1: QZwfRsK8KU/QaDyl0D/qpu/GMcLxlRlfa+1xEX3ZN0grBD0hMwRjeGvpvm46m6JJqm6JY3BOY0w5XtDPtFzspYI04Pu1AswFWvMyJmS+P6fANbwnV23HSw3JTVR3tmIDBWwWBJBTkYLqk9KatguZTKr6NX5tI+1aExlE+rJOfhz1YWZaAlyULR4rkKA=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: 1c835e55ba3b06878e6538b2edadf703_886c1827beff11f18019525400248c00
+    ReservedCode2: QZwfRsK8KU/QaDyl0D/qpu/GMcLxlRlfa+1xEX3ZN0grBD0hMwRjeGvpvm46m6JJqm6JY3BOY0w5XtDPtFzspYI04Pu1AswFWvMyJmS+P6fANbwnV23HSw3JTVR3tmIDBWwWBJBTkYLqk9KatguZTKr6NX5tI+1aExlE+rJOfhz1YWZaAlyULR4rkKA=
+---
+
 # learnMBTI
 
 > 家长视角的孩子学习人格测评：先懂孩子怎么学，再帮 TA 学得更顺。
@@ -64,3 +75,4 @@ python -m http.server 8080
 ## License
 
 [MIT](./LICENSE) © lj22503
+*（内容由AI生成，仅供参考）*

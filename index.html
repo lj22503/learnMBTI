@@ -197,6 +197,57 @@
   .tc-bottom { margin-top: 30px; text-align: center; }
   #tcReset { display: none; }
 
+  /* ===== 正式报告（v1.5）：7 天陪学方案升级为 PDF 式正式报告 ===== */
+  .report { min-height: 1120px; display: flex; flex-direction: column; }
+  .rep-cover { margin-top: 26px; background: linear-gradient(150deg,#f5f3ff,#eef2ff); border: 1px solid #e0e7ff; border-radius: 24px; padding: 34px 26px 30px; text-align: center; }
+  .rep-portrait { width: 176px; height: 176px; margin: 0 auto; display: block; object-fit: contain; }
+  .rep-badge { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; width: 100px; height: 100px; border-radius: 20px; background: linear-gradient(135deg,#4f46e5,#7c3aed); color: #fff; box-shadow: 0 12px 28px rgba(79,70,229,.30); margin-top: 18px; }
+  .rep-badge .code { font-size: 28px; font-weight: 900; letter-spacing: 2px; }
+  .rep-badge .small { font-size: 11px; opacity: .85; margin-top: 2px; }
+  .rep-name { margin-top: 20px; font-size: 40px; font-weight: 900; color: #111827; }
+  .rep-traits { margin-top: 8px; font-size: 15px; color: #6b7280; letter-spacing: 2px; }
+  .rep-meta { margin-top: 14px; font-size: 13px; color: #9ca3af; line-height: 1.7; }
+  .rep-chapter { margin-top: 46px; display: flex; align-items: baseline; gap: 10px; }
+  .rep-chapter .en { font-size: 13px; font-weight: 800; color: #7c3aed; letter-spacing: 3px; }
+  .rep-chapter .cn { font-size: 22px; font-weight: 800; color: #111827; }
+  .rep-chapter::after { content: ""; flex: 1; height: 1px; background: #e5e7eb; }
+  .rep-card { margin-top: 16px; background: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 22px 24px; }
+  .rep-card p { font-size: 16px; line-height: 1.9; color: #374151; }
+  .rep-grid3 { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  .rep-grid3 .g { background: #f8f9fc; border-radius: 14px; padding: 18px 16px; }
+  .rep-grid3 .g .g-tag { font-size: 12px; font-weight: 800; letter-spacing: 2px; color: #4f46e5; }
+  .rep-grid3 .g p { margin-top: 8px; font-size: 14px; line-height: 1.75; color: #374151; }
+  .rep-scores { margin-top: 16px; display: flex; flex-direction: column; gap: 14px; }
+  .rep-score-row .rs-label { display: flex; justify-content: space-between; font-size: 14px; color: #374151; font-weight: 600; margin-bottom: 6px; }
+  .rep-score-row .rs-label b { color: #4f46e5; }
+  .rep-score-row .rs-track { height: 10px; background: #eef0f4; border-radius: 999px; overflow: hidden; }
+  .rep-score-row .rs-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg,#7c3aed,#a78bfa); }
+  .rep-axes4 { margin-top: 16px; display: flex; flex-direction: column; gap: 20px; }
+  .rep-axis .ra-label { display: flex; justify-content: space-between; font-size: 14px; color: #6b7280; font-weight: 600; margin-bottom: 6px; }
+  .rep-axis .ra-label .left { color: #2563eb; }
+  .rep-axis .ra-track { height: 12px; background: #f1f2f6; border-radius: 999px; position: relative; overflow: hidden; }
+  .rep-axis .ra-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 999px; }
+  .rep-axis .ra-fill.c1 { background: linear-gradient(90deg,#3b82f6,#60a5fa); }
+  .rep-axis .ra-fill.c2 { background: linear-gradient(90deg,#f59e0b,#fbbf24); }
+  .rep-axis .ra-fill.c3 { background: linear-gradient(90deg,#8b5cf6,#a78bfa); }
+  .rep-axis .ra-fill.c4 { background: linear-gradient(90deg,#10b981,#34d399); }
+  .rep-dl { margin-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .rep-dl .dl-item { display: flex; gap: 12px; background: #f8f9fc; border-radius: 12px; padding: 16px 18px; }
+  .rep-dl .dl-item .dl-ico { width: 34px; height: 34px; border-radius: 10px; background: #eef0ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; flex-shrink: 0; }
+  .rep-dl .dl-item p { font-size: 14.5px; color: #374151; line-height: 1.75; }
+  .rep-tools { display: flex; justify-content: center; gap: 14px; margin-top: 24px; flex-wrap: wrap; }
+  .rep-foot { margin-top: 40px; text-align: center; font-size: 13px; color: #b0b8c4; line-height: 1.9; }
+  .rep-qr { width: 128px; height: 128px; margin: 20px auto 0; display: block; }
+  .no-print { }
+  .badge-img { width: 148px; height: 148px; margin: 0 auto 10px; display: block; object-fit: contain; }
+  .sc-img { width: 128px; height: 128px; margin: 0 auto 10px; display: block; object-fit: contain; }
+  @media print {
+    body * { visibility: hidden; }
+    #taskcards, #taskcards * { visibility: visible; }
+    #taskcards { position: absolute; left: 0; top: 0; width: 100%; }
+    .no-print { display: none !important; }
+  }
+
   /* ===== H5 移动端适配（参考宽度 375px，触控热区 ≥44px） ===== */
   @media (max-width: 480px) {
     body { min-width: 0; font-size: 15px; }
@@ -367,6 +418,7 @@
     <div class="counter" style="color:#9ca3af">结果报告</div>
   </div>
   <div class="result-head">
+    <img class="badge-img hidden" id="rPortrait" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="学习人格形象">
     <div class="badge"><div class="code" id="rCode"></div><div class="small">学习人格</div></div>
     <h2 id="rName"></h2>
     <div class="traits" id="rTraits"></div>
@@ -413,6 +465,7 @@
   </div>
   <div class="sc-card">
     <div class="sc-head">
+      <img class="sc-img" id="scPortrait" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="学习人格形象">
       <div class="badge"><div class="code" id="scCode"></div><div class="small">学习人格</div></div>
       <div class="sc-name" id="scName"></div>
       <div class="traits" id="scTraits"></div>
@@ -428,22 +481,71 @@
   <div class="footer-note">learnMBTI · 分享即解锁，给孩子一份专属陪学方案</div>
 </section>
 
-<!-- 屏4 7 天陪学方案（v1.3：16 型×学科交叉生成，打卡 localStorage 持久化） -->
-<section id="taskcards" class="screen taskcards hidden">
+<!-- 屏4 正式报告（v1.5）：解锁后展示 PDF 式完整报告，含 7 天陪学计划（打卡 localStorage 持久化） -->
+<section id="taskcards" class="screen report hidden">
   <div class="quiz-top">
     <div class="brand"><span class="dot"></span>learnMBTI</div>
-    <div class="counter" style="color:#9ca3af">7 天陪学方案</div>
+    <div class="counter" style="color:#9ca3af">学习人格报告</div>
   </div>
-  <div class="tc-congrats hidden" id="tcCongrats">恭喜你！已为孩子解锁 7 天陪学方案包。接下来每天照着方案陪 TA 一小会儿，TA 会越来越顺。</div>
-  <div class="tc-head">
-    <div class="tc-kicker">7-DAY PLAN</div>
-    <div class="tc-title" id="tcTitle"></div>
+  <div class="tc-congrats hidden" id="tcCongrats">恭喜你！已为孩子解锁完整报告。接下来每天照着 7 天计划陪 TA 一小会儿，TA 会越来越顺。</div>
+
+  <!-- 报告封面 -->
+  <div class="rep-cover">
+    <img class="rep-portrait" id="repPortrait" src="" alt="学习人格形象">
+    <div class="rep-badge"><div class="code" id="repCode"></div><div class="small">学习人格</div></div>
+    <div class="rep-name" id="repName"></div>
+    <div class="rep-traits" id="repTraits"></div>
+    <div class="rep-meta" id="repMeta"></div>
+  </div>
+
+  <!-- PDF 工具条 -->
+  <div class="rep-tools no-print">
+    <a class="btn small" onclick="downloadPdf()">下载 PDF 报告</a>
+    <a class="btn small ghost" onclick="window.print()">打印 / 另存 PDF</a>
+  </div>
+
+  <!-- 章节 1 基础画像 -->
+  <div class="rep-chapter"><span class="en">BASIC ANALYSIS</span><span class="cn">基础画像</span></div>
+  <div class="rep-card"><p id="repPersona"></p></div>
+
+  <!-- 章节 2 四维倾向 -->
+  <div class="rep-chapter"><span class="en">YOUR PROFILE</span><span class="cn">四维倾向</span></div>
+  <div class="rep-card"><div class="rep-axes4" id="repAxes"></div></div>
+
+  <!-- 章节 3 成长档案 -->
+  <div class="rep-chapter"><span class="en">GROWTH ARCHIVE</span><span class="cn">成长档案</span></div>
+  <div class="rep-grid3">
+    <div class="g"><div class="g-tag">致命坑</div><p id="repPit"></p></div>
+    <div class="g"><div class="g-tag">天赋</div><p id="repGift"></p></div>
+    <div class="g"><div class="g-tag">适合路径</div><p id="repPath"></p></div>
+  </div>
+
+  <!-- 章节 4 学习能量 -->
+  <div class="rep-chapter"><span class="en">LEARNING ENERGY</span><span class="cn">学习能量指数</span></div>
+  <div class="rep-card"><div class="rep-scores" id="repScores"></div></div>
+
+  <!-- 章节 5 学科陪学指南 -->
+  <div class="rep-chapter hidden" id="repSubChapter"><span class="en">SUBJECT GUIDE</span><span class="cn">学科陪学指南</span></div>
+  <div class="rep-card hidden" id="repSubBox">
+    <div class="rep-dl" id="repSubAdvice"></div>
+    <div class="method-list" id="repMethods"></div>
+    <div class="week-card"><div class="w-tag">本周就能试</div><p id="repWeek"></p></div>
+    <div class="quick-look hidden" id="repQuick"><div class="ql-title">另选科目速览</div><div id="repQuickList"></div></div>
+  </div>
+
+  <!-- 章节 6 7 天陪学计划 -->
+  <div class="rep-chapter"><span class="en">7-DAY PLAN</span><span class="cn">7 天陪学计划</span></div>
+  <div class="rep-card">
     <div class="tc-sub" id="tcSub"></div>
+    <div class="tc-progress" id="tcProgress"><b>0</b> / 7 天</div>
+    <div class="tc-list" id="tcList"></div>
+    <div class="tc-done-banner hidden" id="tcDone">7 天计划全部完成！这份坚持值得记进成长档案。明天可以再领一轮新的陪学方案。</div>
   </div>
-  <div class="tc-progress" id="tcProgress"><b>0</b> / 7 天</div>
-  <div class="tc-list" id="tcList"></div>
-  <div class="tc-bottom">
-    <div class="tc-done-banner hidden" id="tcDone">7 天方案全部完成！这份坚持值得记进成长档案。明天可以再领一轮新的陪学方案。</div>
+
+  <!-- 报告落款 -->
+  <div class="rep-foot">learnMBTI · 学习人格正式报告<br>报告仅供家长陪伴参考，不构成教育诊断。测试结果基于 35 道情境题的作答倾向，随成长阶段可能变化。</div>
+
+  <div class="tc-bottom no-print">
     <div class="btn-row">
       <a class="btn ghost" onclick="closeTaskCards()">返回报告</a>
       <a class="btn" id="tcReset" onclick="resetTaskCards()">重置打卡</a>
@@ -563,24 +665,24 @@ var QUESTIONS = [
     b: { label: "心里明白这些知识点了", pole: "clear" } }
 ];
 
-/* ===== 数据：16 型（称号 / 通用人设骨架） ===== */
+/* ===== 数据：16 型（称号 / 通用人设骨架 / 成长档案 / 学习能量） ===== */
 var TYPES = {
-  "AF_LW": { name: "摸黑冲刺王", persona: "TA 是那种“先跳进水里再学游泳”的孩子。比起听讲解，TA 更相信自己的手和眼睛。让 TA 安静地摸索、犯错、再修正，就是最好的学习。" },
-  "PF_LW": { name: "战略拖延师", persona: "TA 是那种“先看清整张地图才肯动工”的孩子。TA 需要全局图景和清晰的步骤，规划本身就是 TA 学习的一部分。" },
-  "AD_LW": { name: "细节手艺人", persona: "TA 的手比嘴快，喜欢把东西拆开看里面长什么样。允许 TA 拆、允许 TA 错，TA 会从零件里长出自己的学问。" },
-  "PD_LW": { name: "完美主义工匠", persona: "TA 按部就班、稳扎稳打，每一步都要踏实。给 TA 清单和流程图，TA 会用节奏赢得最后的胜利。" },
-  "AF_LT": { name: "莽夫研究员", persona: "TA 自己试、自己悟，弄明白才安心。别急着考 TA，给 TA 探索型任务，TA 会在安静中想通很多事。" },
-  "PF_LT": { name: "阁楼思想家", persona: "TA 先看清全局，再慢慢想通，不喜欢被催着要结论。和 TA 多讨论、多提问，TA 会给出自己的答案。" },
-  "AD_LT": { name: "强迫症学徒", persona: "TA 从细节里钻出学问，每一个“为什么”都是入口。满足 TA 的好奇，给 TA 深度资料，TA 会越钻越深。" },
-  "PD_LT": { name: "钻牛角尖大师", persona: "TA 一步一步推理，直到完全想通为止。给 TA 推理素材和充分时间，TA 会还你一套严密的思考。" },
-  "AF_GW": { name: "团伙冲锋队长", persona: "TA 动手就要做出成品，还要拉着大家一起冲。给 TA 一个小组和明确目标，TA 会带着团队把东西做成。" },
-  "AF_GT": { name: "带飞好奇宝宝", persona: "TA 边做边聊，灵感靠碰撞出来。陪 TA 头脑风暴、一起探索，TA 的想法会在交流中长出来。" },
-  "PF_GW": { name: "预习狂魔教练", persona: "TA 先想清楚全局，再组织大家一起做出成品。给 TA 目标和分工，TA 会带着团队稳稳交付。" },
-  "PF_GT": { name: "理论饭搭子", persona: "TA 想明白才愿意分享，越聊越透。给 TA 讨论局和输出机会，TA 的理解会在表达中定型。" },
-  "AD_GW": { name: "跟班实干家", persona: "TA 从细节出发，边拆边带大家把东西做成。给 TA 一个小项目和分工，TA 会组织同伴一起交付。" },
-  "AD_GT": { name: "十万个为什么", persona: "TA 拆细节、找规律、拉人验证，像个小侦探。给 TA 谜题型任务，再把 TA 拉来当讨论对手。" },
-  "PD_GW": { name: "抄作业优等生", persona: "TA 把流程安排得明明白白，再带队保质保量交付。给 TA 一个项目和验收标准，TA 会带着大家按时交出成果。" },
-  "PD_GT": { name: "学术型扫地僧", persona: "TA 把每一步都弄懂，还要讲给大家听。安排 TA 复盘和分享，TA 会在输出里把知识焊牢。" }
+  "AF_LW": { name: "摸黑冲刺王", persona: "TA 是那种“先跳进水里再学游泳”的孩子。比起听讲解，TA 更相信自己的手和眼睛。让 TA 安静地摸索、犯错、再修正，就是最好的学习。", pit: "收藏夹里全是“先码住”的计划——因为 TA 从来不看攻略，也不看收藏夹，冲太快、回头太慢。", gift: "试错型选手，在真实练习里进步速度惊人，踩过的坑全变成经验。", path: "上手 → 出错 → 修正 → 再战（先别让 TA 看理论，会憋坏）", scores: [62, 80, 100, 71] },
+  "PF_LW": { name: "战略拖延师", persona: "TA 是那种“先看清整张地图才肯动工”的孩子。TA 需要全局图景和清晰的步骤，规划本身就是 TA 学习的一部分。", pit: "完美准备 = 永不开始，“等一个更好的时机”是 TA 的口头禅。", gift: "一旦开始，能把复杂问题拆成清晰地图，框架感碾压所有人。", path: "先定 10 分钟小目标 → 立刻执行 → 再补攻略", scores: [28, 82, 100, 23] },
+  "AD_LW": { name: "细节手艺人", persona: "TA 的手比嘴快，喜欢把东西拆开看里面长什么样。允许 TA 拆、允许 TA 错，TA 会从零件里长出自己的学问。", pit: "完美主义导致交付慢，常常错过时机。", gift: "细节质量碾压，作品特别能打。", path: "上手 → 精修 → 交付 → 迭代", scores: [72, 70, 65, 66] },
+  "PD_LW": { name: "完美主义工匠", persona: "TA 按部就班、稳扎稳打，每一步都要踏实。给 TA 清单和流程图，TA 会用节奏赢得最后的胜利。", pit: "设计期无限拉长，作品永远“在画图中”。", gift: "出品即精品，返工率极低。", path: "定稿 → 小步试 → 校准 → 交付", scores: [55, 78, 85, 48] },
+  "AF_LT": { name: "莽夫研究员", persona: "TA 自己试、自己悟，弄明白才安心。别急着考 TA，给 TA 探索型任务，TA 会在安静中想通很多事。", pit: "撞了南墙也不回头，从不看攻略。", gift: "大量实践后能反推出原理，自己长出一套体系。", path: "动手 → 撞墙 → 复盘 → 总结", scores: [55, 85, 88, 78] },
+  "PF_LT": { name: "阁楼思想家", persona: "TA 先看清全局，再慢慢想通，不喜欢被催着要结论。和 TA 多讨论、多提问，TA 会给出自己的答案。", pit: "思想上的巨人、行动上的小矮人。", gift: "理论通透，能把原理讲得明明白白。", path: "小步实践 → 对照理论 → 迭代", scores: [35, 75, 95, 30] },
+  "AD_LT": { name: "强迫症学徒", persona: "TA 从细节里钻出学问，每一个“为什么”都是入口。满足 TA 的好奇，给 TA 深度资料，TA 会越钻越深。", pit: "卡在一个细节里出不来，进度原地打转。", gift: "理解深度扎实，不容易被糊弄。", path: "动手 → 死磕细节 → 弄透 → 进阶", scores: [48, 92, 78, 60] },
+  "PD_LT": { name: "钻牛角尖大师", persona: "TA 一步一步推理，直到完全想通为止。给 TA 推理素材和充分时间，TA 会还你一套严密的思考。", pit: "钻进去出不来，整体进度失衡。", gift: "理解没有死角，水平逼近小专家。", path: "定目标 → 死磕 → 产出 → 分享", scores: [42, 95, 75, 52] },
+  "AF_GW": { name: "团伙冲锋队长", persona: "TA 动手就要做出成品，还要拉着大家一起冲。给 TA 一个小组和明确目标，TA 会带着团队把东西做成。", pit: "队友一散就熄火，学习启动全靠搭子。", gift: "组局快、行动力强，天然带节奏。", path: "组队 → 分工 → 冲刺 → 交付", scores: [68, 45, 72, 82] },
+  "AF_GT": { name: "带飞好奇宝宝", persona: "TA 边做边聊，灵感靠碰撞出来。陪 TA 头脑风暴、一起探索，TA 的想法会在交流中长出来。", pit: "问完就忘、不沉淀，同一个问题问三遍。", gift: "求知欲拉满，信息整合能力一流。", path: "上手 → 逢人便问 → 整理 → 再试", scores: [58, 60, 90, 75] },
+  "PF_GW": { name: "预习狂魔教练", persona: "TA 先想清楚全局，再组织大家一起做出成品。给 TA 目标和分工，TA 会带着团队稳稳交付。", pit: "教别人的时间比真正学的还多。", gift: "教即是学，输出倒逼输入，讲着讲着就真会了。", path: "预习 → 组局 → 输出 → 实战", scores: [60, 40, 80, 70] },
+  "PF_GT": { name: "理论饭搭子", persona: "TA 想明白才愿意分享，越聊越透。给 TA 讨论局和输出机会，TA 的理解会在表达中定型。", pit: "用“懂了”代替“会了”，很少真正上手。", gift: "在讨论交流里成长飞快，人缘即教材。", path: "聊 → 查证 → 动手 → 复盘", scores: [40, 58, 92, 45] },
+  "AD_GW": { name: "跟班实干家", persona: "TA 从细节出发，边拆边带大家把东西做成。给 TA 一个小项目和分工，TA 会组织同伴一起交付。", pit: "离开示范就不会，太依赖范例。", gift: "执行力强，作品稳定可靠。", path: "找榜样 → 照做 → 内化 → 独立", scores: [50, 55, 82, 58] },
+  "AD_GT": { name: "十万个为什么", persona: "TA 拆细节、找规律、拉人验证，像个小侦探。给 TA 谜题型任务，再把 TA 拉来当讨论对手。", pit: "问题太多，学习主线常被带偏。", gift: "好奇驱动，能挖到别人挖不到的深度。", path: "边做边问 → 归类 → 攻克 → 输出", scores: [45, 50, 85, 63] },
+  "PD_GW": { name: "抄作业优等生", persona: "TA 把流程安排得明明白白，再带队保质保量交付。给 TA 一个项目和验收标准，TA 会带着大家按时交出成果。", pit: "只会抄、不会超，长期停在模仿层。", gift: "吸收快，站在巨人肩膀上起飞。", path: "找标杆 → 拆解 → 复刻 → 超越", scores: [58, 35, 70, 62] },
+  "PD_GT": { name: "学术型扫地僧", persona: "TA 把每一步都弄懂，还要讲给大家听。安排 TA 复盘和分享，TA 会在输出里把知识焊牢。", pit: "学了不用、深藏不露，价值不被看见。", gift: "体系完整，一开口就是降维打击。", path: "定体系 → 逐项啃 → 实践 → 讲出来", scores: [65, 68, 88, 66] }
 };
 
 /* ===== 数据：4 个高频学科（记忆/思考/语言/运动）交叉词库与方法库 =====
@@ -876,6 +978,10 @@ function crossFor(code, subKey) {
 
 function renderResult(code, r) {
   var t = TYPES[code.slice(0, 2) + "_" + code.slice(2)];
+  /* 形象图（透明底，按类型码取用） */
+  var rp = document.getElementById("rPortrait");
+  rp.src = "assets/portraits/type-" + code + ".png";
+  rp.classList.remove("hidden");
   document.getElementById("rCode").textContent = code;
   document.getElementById("rName").textContent = t.name;
   var t1 = r.start.edge ? "待观察" : (r.start.win === "start" ? "先动手派" : "先规划派");
@@ -988,8 +1094,8 @@ function renderResult(code, r) {
     methodBox.classList.add("hidden");
   }
 
-  /* ③ 记录当前结果，供解锁方案包 / 复测使用 */
-  lastResult = { code: code, sub: firstSub };
+  /* ③ 记录当前结果，供正式报告 / 复测使用 */
+  lastResult = { code: code, sub: firstSub, subs: selectedSubjects.slice(0), r: r };
 }
 
 /* ===== 档案钩子：保存档案 / 复测 ===== */
@@ -1035,11 +1141,118 @@ function storageKeyFor(code, subKey) {
   return "learnMBTI_task7_" + code + "_" + subKey;
 }
 
-function renderTaskCards(code, subKey) {
+/* ===== 正式报告（v1.5）：渲染 PDF 式完整报告 ===== */
+var SCORE_NAMES = ["学习自信", "卡点韧性", "探索欲", "自驱力"];
+var SCORE_TIPS = [
+  "遇到新任务时，TA 更相信自己能搞定",
+  "卡住时能坚持多久、会不会马上求助",
+  "对没接触过的内容，天然想动手试试的程度",
+  "不需要人盯，自己推进学习的意愿"
+];
+
+function renderReport(code, subKey, r) {
   var t = TYPES[code.slice(0, 2) + "_" + code.slice(2)];
+  var hasSub = !!subKey && !!SUBJECTS[subKey];
+
+  /* 封面 */
+  document.getElementById("repPortrait").src = "assets/portraits/type-" + code + ".png";
+  document.getElementById("repCode").textContent = code;
+  document.getElementById("repName").textContent = t.name;
+  document.getElementById("repTraits").textContent = document.getElementById("rTraits").textContent || "";
+  var now = new Date();
+  var d = now.getFullYear() + " 年 " + (now.getMonth() + 1) + " 月 " + now.getDate() + " 日";
+  var subName = hasSub ? SUBJECTS[subKey].name : "";
+  document.getElementById("repMeta").textContent = "报告生成时间：" + d + (subName ? " · 学科语境：" + subName : " · 通用版报告");
+
+  /* 章节1 基础画像 */
+  var cross = hasSub ? crossFor(code, subKey) : null;
+  document.getElementById("repPersona").textContent = hasSub ? cross.persona : t.persona;
+
+  /* 章节2 四维倾向 */
+  var ax = document.getElementById("repAxes");
+  ax.innerHTML = "";
+  var rows = [
+    { l: "先动手派", r: "先规划派", pct: r.start.pct, edge: r.start.edge, c: "c1" },
+    { l: "看大局派", r: "抠细节派", pct: r.big.pct, edge: r.big.edge, c: "c2" },
+    { l: "独行侠", r: "搭子狂", pct: r.alone.pct, edge: r.alone.edge, c: "c3" },
+    { l: "作品党", r: "通透党", pct: r.work.pct, edge: r.work.edge, c: "c4" }
+  ];
+  for (var i = 0; i < rows.length; i++) {
+    var win = rows[i].pct >= 50 ? rows[i].l : rows[i].r;
+    var row = document.createElement("div");
+    row.className = "rep-axis";
+    row.innerHTML = '<div class="ra-label"><span class="left">' + rows[i].l + ' ' + rows[i].pct + '%' + (rows[i].edge ? '（待观察）' : '') + '</span><span>' + win + '倾向</span></div>' +
+      '<div class="ra-track"><div class="ra-fill ' + rows[i].c + '" style="width:' + rows[i].pct + '%"></div></div>';
+    ax.appendChild(row);
+  }
+
+  /* 章节3 成长档案 */
+  document.getElementById("repPit").textContent = t.pit;
+  document.getElementById("repGift").textContent = t.gift;
+  document.getElementById("repPath").textContent = t.path;
+
+  /* 章节4 学习能量 */
+  var sc = document.getElementById("repScores");
+  sc.innerHTML = "";
+  for (var si = 0; si < 4; si++) {
+    var v = t.scores[si];
+    var sRow = document.createElement("div");
+    sRow.className = "rep-score-row";
+    sRow.innerHTML = '<div class="rs-label"><span>' + SCORE_NAMES[si] + ' · ' + SCORE_TIPS[si] + '</span><b>' + v + '</b></div>' +
+      '<div class="rs-track"><div class="rs-fill" style="width:' + v + '%"></div></div>';
+    sc.appendChild(sRow);
+  }
+
+  /* 章节5 学科陪学指南 */
+  var scCh = document.getElementById("repSubChapter");
+  var scBox = document.getElementById("repSubBox");
+  if (hasSub) {
+    scCh.classList.remove("hidden");
+    scBox.classList.remove("hidden");
+    var s0 = SUBJECTS[subKey];
+    var adv = document.getElementById("repSubAdvice");
+    adv.innerHTML = "";
+    var titles = ["节奏", "验收", "陪法"];
+    var crossAdv = cross.advice;
+    for (var ai = 0; ai < crossAdv.length; ai++) {
+      var aItem = document.createElement("div");
+      aItem.className = "dl-item";
+      aItem.innerHTML = '<div class="dl-ico">' + (ai + 1) + '</div><p><b>' + titles[ai] + '：</b>' + crossAdv[ai] + '</p>';
+      adv.appendChild(aItem);
+    }
+    var ml = document.getElementById("repMethods");
+    ml.innerHTML = "";
+    for (var mi = 0; mi < s0.methods.length; mi++) {
+      var mItem = document.createElement("div");
+      mItem.className = "method-item";
+      mItem.innerHTML = '<div class="m-dot">' + (mi + 1) + '</div><p>' + s0.methods[mi] + '</p>';
+      ml.appendChild(mItem);
+    }
+    document.getElementById("repWeek").textContent = s0.week;
+    var extra = lastResult && lastResult.subs ? lastResult.subs.slice(1) : [];
+    var ql = document.getElementById("repQuick");
+    var qlList = document.getElementById("repQuickList");
+    if (extra.length > 0) {
+      ql.classList.remove("hidden");
+      qlList.innerHTML = "";
+      for (var ei = 0; ei < extra.length; ei++) {
+        var se = SUBJECTS[extra[ei]];
+        var qItem = document.createElement("div");
+        qItem.className = "ql-item";
+        qItem.innerHTML = "<b>" + se.name + "：</b>" + se.quick;
+        qlList.appendChild(qItem);
+      }
+    } else {
+      ql.classList.add("hidden");
+    }
+  } else {
+    scCh.classList.add("hidden");
+    scBox.classList.add("hidden");
+  }
+
+  /* 章节6 7 天陪学计划（保留打卡） */
   var sub = SUBJECTS[subKey];
   var tasks = sub ? TASK_SUBJECTS[subKey] : TASK_GENERIC;
-  document.getElementById("tcTitle").innerHTML = t.name + '<span class="x"> × </span>' + (sub ? sub.name : "通用版");
   document.getElementById("tcSub").textContent = sub
     ? "按「" + t.name + "」的节奏 + 「" + sub.name + "」的任务内容生成，每天 1 张，交叉专属于 TA"
     : "未选学科，按「" + t.name + "」的节奏给出 16 型通用任务";
@@ -1072,12 +1285,44 @@ function renderTaskCards(code, subKey) {
   window.tcStorageKey = key;
 }
 
+/* 下载 PDF 报告：html2canvas 整页截图 + jsPDF 按 A4 分页 */
+function downloadPdf() {
+  if (!window.html2canvas || !window.jspdf) { alert("PDF 组件加载失败，请检查网络后重试，或改用「打印 / 另存 PDF」。"); return; }
+  var el = document.getElementById("taskcards");
+  var hides = el.querySelectorAll(".no-print");
+  var prev = [];
+  for (var hi = 0; hi < hides.length; hi++) { prev.push(hides[hi].style.display); hides[hi].style.display = "none"; }
+  window.scrollTo(0, 0);
+  html2canvas(el, { scale: 2, useCORS: true, backgroundColor: "#ffffff", windowWidth: el.scrollWidth, scrollY: 0 }).then(function (canvas) {
+    for (var hi = 0; hi < hides.length; hi++) { hides[hi].style.display = prev[hi]; }
+    var pdf = new window.jspdf.jsPDF({ orientation: "portrait", unit: "mm", format: "a4" });
+    var pageW = 210, pageH = 297;
+    var pagePx = canvas.width / pageW * pageH;
+    var pages = Math.ceil(canvas.height / pagePx);
+    for (var i = 0; i < pages; i++) {
+      if (i > 0) { pdf.addPage(); }
+      var sh = Math.min(pagePx, canvas.height - i * pagePx);
+      var slice = document.createElement("canvas");
+      slice.width = canvas.width;
+      slice.height = Math.round(sh);
+      slice.getContext("2d").drawImage(canvas, 0, Math.round(i * pagePx), canvas.width, slice.height, 0, 0, canvas.width, slice.height);
+      var imgH = slice.height / canvas.width * pageW;
+      pdf.addImage(slice.toDataURL("image/jpeg", 0.95), "JPEG", 0, 0, pageW, imgH, undefined, "FAST");
+    }
+    var code = document.getElementById("repCode").textContent || "report";
+    pdf.save("learnMBTI-" + code + "-学习人格报告.pdf");
+  }).catch(function (e) {
+    for (var hi = 0; hi < hides.length; hi++) { hides[hi].style.display = prev[hi]; }
+    alert("PDF 生成失败：" + e.message);
+  });
+}
+
 function openTaskCards() {
   if (!lastResult) { alert("请先完成一次测试，再领取任务卡。"); return; }
   var subKey = lastResult.sub || "generic";
   document.getElementById("result").classList.add("hidden");
   document.getElementById("taskcards").classList.remove("hidden");
-  renderTaskCards(lastResult.code, subKey);
+  renderReport(lastResult.code, subKey, lastResult.r);
   window.scrollTo(0, 0);
 }
 function closeTaskCards() {
@@ -1091,12 +1336,12 @@ function toggleTaskDone(i) {
   try { doneMap = JSON.parse(localStorage.getItem(window.tcStorageKey) || "{}") || {}; } catch (e) { doneMap = {}; }
   doneMap[i] = !doneMap[i];
   localStorage.setItem(window.tcStorageKey, JSON.stringify(doneMap));
-  renderTaskCards(lastResult.code, lastResult.sub || "generic");
+  renderReport(lastResult.code, lastResult.sub || "generic", lastResult.r);
 }
 function resetTaskCards() {
   if (confirm("确定清空这 7 天的打卡记录吗？")) {
     localStorage.removeItem(window.tcStorageKey);
-    renderTaskCards(lastResult.code, lastResult.sub || "generic");
+    renderReport(lastResult.code, lastResult.sub || "generic", lastResult.r);
   }
 }
 
@@ -1115,7 +1360,7 @@ if (location.search.indexOf("showcase") !== -1) {
     work:  { pct: 80, win: "work", edge: false }
   };
   renderResult("AFLW", sample);
-  renderTaskCards("AFLW", "think");
+  renderReport("AFLW", "think", sample);
 }
 
 /* ===== 移动端渲染诊断（#diag 或 ?diag=1，仅供无头验证，不影响正常使用） ===== */
@@ -1141,7 +1386,7 @@ if (location.search.indexOf("diag") !== -1 || location.hash.indexOf("diag") !== 
     work:  { pct: 80, win: "work", edge: false }
   };
   renderResult("AFLW", diagSample);
-  renderTaskCards("AFLW", "think");
+  renderReport("AFLW", "think", diagSample);
   setTimeout(function () {
     var vw = window.innerWidth;
     var docSW = document.documentElement.scrollWidth;
@@ -1178,6 +1423,7 @@ if (location.search.indexOf("diag") !== -1 || location.hash.indexOf("diag") !== 
 function openShareCard() {
   var code = document.getElementById("rCode").textContent;
   var t = TYPES[code.slice(0, 2) + "_" + code.slice(2)];
+  document.getElementById("scPortrait").src = "assets/portraits/type-" + code + ".png";
   document.getElementById("scCode").textContent = code;
   document.getElementById("scName").textContent = t.name;
   document.getElementById("scTraits").textContent = document.getElementById("rTraits").textContent;
@@ -1194,6 +1440,9 @@ function unlockPlan() {
   if (window.LMT) { window.LMT.track("plan_unlocked", {}); }
 }
 </script>
+<!-- PDF 报告组件（html2canvas + jsPDF，下载 PDF 报告用） -->
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 <!-- ===== learnMBTI 访问统计与事件埋点 ===== -->
 <script>
 (function () {

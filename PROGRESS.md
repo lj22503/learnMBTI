@@ -1,3 +1,14 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: 1c835e55ba3b06878e6538b2edadf703_8afc38d4beff11f18019525400248c00
+    ReservedCode1: 8vWJ/EYDObb2kuVYXcLZWUm3V2JjIyJOgDTkrL6Nhp3QkY6wRTdHgrWAIlPtllW/8B8XA324+AN64VxSzNvWv0R2+GIwrOkloBetB1oHfbA4yFsprpDhJAMyAWJ/lhr+mEfHKFbemKqlLBkAlQC9s46NPw5JImu1bnShwETPv1KMznwedsdSjccdGz0=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: 1c835e55ba3b06878e6538b2edadf703_8afc38d4beff11f18019525400248c00
+    ReservedCode2: 8vWJ/EYDObb2kuVYXcLZWUm3V2JjIyJOgDTkrL6Nhp3QkY6wRTdHgrWAIlPtllW/8B8XA324+AN64VxSzNvWv0R2+GIwrOkloBetB1oHfbA4yFsprpDhJAMyAWJ/lhr+mEfHKFbemKqlLBkAlQC9s46NPw5JImu1bnShwETPv1KMznwedsdSjccdGz0=
+---
+
 # PROGRESS.md — learnMBTI 项目进度
 
 采用刘小排 11 步法推进。更新于 2026-10-03。
@@ -30,3 +41,4 @@
 - [ ] 补充 16 型档案内容（每型：学习风格/适合环境/沟通话术/资源推荐）
 - [ ] 21 天定制方案服务手册与定价页
 - [ ] 公众号「最优解人生」发布产品文与招募入口
+*（内容由AI生成，仅供参考）*

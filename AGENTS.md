@@ -1,3 +1,14 @@
+---
+AIGC:
+    Label: "1"
+    ContentProducer: 001191440300708461136T1XGW3
+    ProduceID: 1c835e55ba3b06878e6538b2edadf703_8a1266ecbeff11f18019525400248c00
+    ReservedCode1: MzZFyG52jx6SrhPmNTBJgDvSOTOTcY/wZehP9Moe3M/LPhd+P6inwJUnTUZmriL4sVKKuIDxS4AzrWnWWNC0Bo7YZQAxWwgqdc1WG5jLeBN727n5L/u/tE3bweWhUqqNZD/TKXYow2Fa7+EG2m5AH83lM/rcmMmSX7t+W0w2MK40/6cmlt5k9uSUlFw=
+    ContentPropagator: 001191440300708461136T1XGW3
+    PropagateID: 1c835e55ba3b06878e6538b2edadf703_8a1266ecbeff11f18019525400248c00
+    ReservedCode2: MzZFyG52jx6SrhPmNTBJgDvSOTOTcY/wZehP9Moe3M/LPhd+P6inwJUnTUZmriL4sVKKuIDxS4AzrWnWWNC0Bo7YZQAxWwgqdc1WG5jLeBN727n5L/u/tE3bweWhUqqNZD/TKXYow2Fa7+EG2m5AH83lM/rcmMmSX7t+W0w2MK40/6cmlt5k9uSUlFw=
+---
+
 # AGENTS.md — learnMBTI 项目规则
 
 本文件定义 learnMBTI 项目（家长视角孩子学习人格测评）的协作边界与执行规范，供 AI 助手与协作者遵循。
@@ -27,3 +38,4 @@
 - 主产物（Demo）需在 375px 宽度下无横向溢出，移动端可用。
 - 文案中性、克制、无断言性疗效承诺。
 - 提交信息简洁描述变更内容。
+*（内容由AI生成，仅供参考）*

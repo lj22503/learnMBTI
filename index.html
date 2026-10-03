@@ -3,7 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>learnMBTI · 孩子学习人格测试（可交互 Demo v1.3 · 7 天任务卡闭环）</title>
+<title>learnMBTI · 孩子学习人格测试</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="learnMBTI">
+<meta property="og:title" content="learnMBTI · 孩子学习人格测试">
+<meta property="og:description" content="16 型学习人格 × 8 大学科交叉报告，附选科建议与 7 天任务卡打卡闭环。">
+<meta property="og:url" content="https://lj22503.github.io/learnMBTI/">
+<meta property="og:image" content="https://lj22503.github.io/learnMBTI/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="learnMBTI · 孩子学习人格测试">
+<meta name="twitter:description" content="16 型学习人格 × 8 大学科交叉报告，附选科建议与 7 天任务卡打卡闭环。">
+<meta name="twitter:image" content="https://lj22503.github.io/learnMBTI/og-image.png">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body { overflow-x: hidden; }
@@ -1138,6 +1148,58 @@ if (location.search.indexOf("diag") !== -1 || location.hash.indexOf("diag") !== 
     document.body.appendChild(box);
   }, 300);
 }
+</script>
+<!-- ===== learnMBTI 访问统计与事件埋点 ===== -->
+<script>
+(function () {
+  var EP = (window.LEARNMBTI_ANALYTICS_ENDPOINT || "").trim();
+  var Q = [];
+  try { Q = JSON.parse(localStorage.getItem("lmt_events") || "[]"); } catch (e) {}
+  function push(ev) {
+    ev.ts = Date.now();
+    ev.url = location.href.split("#")[0];
+    try { localStorage.setItem("lmt_events", JSON.stringify(Q.concat([ev]).slice(-200))); } catch (e) {}
+    if (EP) {
+      try {
+        if (navigator.sendBeacon) navigator.sendBeacon(EP, JSON.stringify(ev));
+        else fetch(EP, { method: "POST", body: JSON.stringify(ev), keepalive: true });
+      } catch (e) {}
+    }
+  }
+  function env() {
+    try {
+      return { lang: navigator.language || "", tz: Intl.DateTimeFormat().resolvedOptions().timeZone || "", ua: navigator.userAgent || "" };
+    } catch (e) { return { lang: "", tz: "", ua: "" }; }
+  }
+  function track(name, extra) {
+    var ev = { ev: name, env: env() };
+    for (var k in (extra || {})) ev[k] = extra[k];
+    push(ev);
+  }
+  window.LMT = { track: track };
+  track("page_view", { ref: document.referrer || "" });
+  try {
+    if (navigator.onLine !== false) {
+      fetch("https://ip-api.com/json/?fields=status,country,regionName,city,query").then(function (r) { return r.json(); }).then(function (j) {
+        if (j && j.status === "success") track("geo_probe", { country: j.country, region: j.regionName, city: j.city, ip: j.query });
+      }).catch(function () {});
+    }
+  } catch (e) {}
+  document.addEventListener("click", function (e) {
+    var el = e.target;
+    while (el && el !== document.body && !(el.classList && (el.classList.contains("btn") || el.classList.contains("subject-card") || el.classList.contains("opt") || el.classList.contains("tc-check")))) el = el.parentElement;
+    if (!el || !el.classList) return;
+    var txt = (el.textContent || "").replace(/\s+/g, " ").trim().slice(0, 40);
+    var nm = el.classList.contains("subject-card") ? "subject_select" :
+             el.classList.contains("opt") ? "question_answer" :
+             el.classList.contains("tc-check") ? "task_checkin" : "btn_click";
+    track(nm, { cls: el.className, txt: txt });
+  }, true);
+  var t0 = Date.now();
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "hidden") track("leave", { stayMs: Date.now() - t0 });
+  });
+})();
 </script>
 </body>
 </html>

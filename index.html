@@ -240,6 +240,8 @@
   .rep-qr { width: 128px; height: 128px; margin: 20px auto 0; display: block; }
   .no-print { }
   .badge-img { width: 148px; height: 148px; margin: 0 auto 10px; display: block; object-fit: contain; }
+  /* v1.5.1：类型码（AFLW 等）不展示，只保留称号，避免晦涩英文干扰家长 */
+  .badge .code, .rep-badge .code { display: none; }
   .sc-img { width: 128px; height: 128px; margin: 0 auto 10px; display: block; object-fit: contain; }
   @media print {
     body * { visibility: hidden; }
@@ -1421,8 +1423,10 @@ if (location.search.indexOf("diag") !== -1 || location.hash.indexOf("diag") !== 
 
 /* ===== 分享卡（v1.4）：单一动作 = 生成分享卡 → 分享后解锁 7 天陪学方案包 ===== */
 function openShareCard() {
-  var code = document.getElementById("rCode").textContent;
+  var code = (document.getElementById("rCode").textContent || "").trim();
+  if (!code) { alert("请先完成测试，再生成分享卡。"); return; }
   var t = TYPES[code.slice(0, 2) + "_" + code.slice(2)];
+  if (!t) { alert("暂未找到对应的学习人格，请重新测试。"); return; }
   document.getElementById("scPortrait").src = "assets/portraits/type-" + code + ".png";
   document.getElementById("scCode").textContent = code;
   document.getElementById("scName").textContent = t.name;
@@ -1440,9 +1444,9 @@ function unlockPlan() {
   if (window.LMT) { window.LMT.track("plan_unlocked", {}); }
 }
 </script>
-<!-- PDF 报告组件（html2canvas + jsPDF，下载 PDF 报告用） -->
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<!-- PDF 报告组件（html2canvas + jsPDF，本地 vendor，规避 CDN 在移动端加载失败） -->
+<script src="assets/vendor/html2canvas.min.js"></script>
+<script src="assets/vendor/jspdf.umd.min.js"></script>
 <!-- ===== learnMBTI 访问统计与事件埋点 ===== -->
 <script>
 (function () {

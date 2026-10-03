@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>learnMBTI · 孩子学习人格测试</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    background: #ffffff; color: #1f2937; width: 750px; margin: 0 auto;
+    -webkit-font-smoothing: antialiased;
+  }
+  .screen { padding: 48px 60px 44px; }
+
+  /* ===== 通用 ===== */
+  .brand { display: flex; align-items: center; gap: 10px; font-size: 26px; font-weight: 800; color: #111827; }
+  .brand .dot { width: 22px; height: 22px; border-radius: 6px; background: linear-gradient(135deg,#4f46e5,#7c3aed); }
+  .brand span.sub { font-size: 15px; font-weight: 500; color: #9ca3af; margin-left: 2px; }
+  .btn {
+    display: inline-block; padding: 18px 56px; background: #4f46e5; color: #fff;
+    font-size: 22px; font-weight: 700; border-radius: 999px; letter-spacing: 2px;
+    box-shadow: 0 8px 24px rgba(79,70,229,.28); transition: transform .15s, box-shadow .15s;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(79,70,229,.34); }
+  .footer-note { margin-top: 30px; text-align: center; font-size: 14px; color: #b0b8c4; }
+
+  /* ===== 屏1 首页 ===== */
+  .home { min-height: 1120px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .home h1 { margin-top: 40px; font-size: 52px; font-weight: 900; line-height: 1.4; letter-spacing: 1px; color: #111827; }
+  .home h1 .accent { color: #4f46e5; }
+  .home .desc { margin-top: 26px; font-size: 21px; color: #6b7280; line-height: 1.9; max-width: 560px; }
+  .home .desc b { color: #374151; }
+  .home .btn-wrap { margin-top: 52px; }
+  .home .meta { margin-top: 28px; font-size: 15px; color: #9ca3af; letter-spacing: 1px; }
+
+  /* ===== 屏2 答题页 ===== */
+  .quiz { min-height: 1120px; display: flex; flex-direction: column; }
+  .quiz-top { display: flex; align-items: center; justify-content: space-between; }
+  .quiz-top .counter { font-size: 17px; color: #6b7280; font-weight: 600; }
+  .quiz-top .counter b { color: #4f46e5; font-size: 22px; }
+  .progress-track { margin-top: 18px; height: 6px; background: #eef0f4; border-radius: 999px; }
+  .progress-fill { height: 100%; width: 12%; background: #4f46e5; border-radius: 999px; transition: width .4s; }
+  .quiz-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .q-dim { text-align: center; font-size: 15px; color: #9ca3af; letter-spacing: 3px; text-transform: uppercase; }
+  .q-text { margin-top: 22px; text-align: center; font-size: 34px; font-weight: 800; line-height: 1.6; color: #111827; }
+  .opts { margin-top: 56px; display: flex; gap: 20px; }
+  .opt {
+    flex: 1; background: #ffffff; border: 2px solid #e5e7eb; border-radius: 16px;
+    padding: 30px 24px; text-align: center; font-size: 20px; line-height: 1.7; color: #374151;
+    cursor: pointer; transition: border-color .15s, box-shadow .15s, transform .15s;
+  }
+  .opt .letter { display: inline-block; width: 34px; height: 34px; line-height: 34px; border-radius: 50%; background: #eef0f4; color: #6b7280; font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+  .opt:hover { border-color: #4f46e5; box-shadow: 0 10px 24px rgba(79,70,229,.10); transform: translateY(-2px); }
+  .opt:hover .letter { background: #4f46e5; color: #fff; }
+  .q-note { margin-top: 44px; text-align: center; font-size: 14px; color: #b0b8c4; }
+
+  /* ===== 屏3 结果页 ===== */
+  .result { }
+  .result-head { text-align: center; padding-top: 20px; }
+  .badge {
+    display: inline-block; width: 150px; height: 150px; border-radius: 24px;
+    background: linear-gradient(135deg,#4f46e5,#7c3aed); color: #fff;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 16px 40px rgba(79,70,229,.30); margin-top: 12px;
+  }
+  .badge .code { font-size: 30px; font-weight: 900; letter-spacing: 3px; }
+  .badge .small { font-size: 12px; opacity: .8; margin-top: 4px; }
+  .result-head h2 { margin-top: 28px; font-size: 44px; font-weight: 900; color: #111827; }
+  .result-head .traits { margin-top: 10px; font-size: 17px; color: #6b7280; letter-spacing: 2px; }
+  .result-head .summary { margin-top: 24px; font-size: 21px; color: #4b5563; line-height: 1.9; max-width: 580px; margin-left: auto; margin-right: auto; }
+
+  .axes { margin-top: 48px; display: flex; flex-direction: column; gap: 26px; }
+  .axis-row { }
+  .axis-label { display: flex; justify-content: space-between; font-size: 16px; color: #6b7280; margin-bottom: 8px; font-weight: 600; }
+  .axis-label .left { color: #4f46e5; } .axis-label .right { color: #6b7280; }
+  .axis-track { height: 10px; background: #eef0f4; border-radius: 999px; position: relative; overflow: hidden; }
+  .axis-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 999px; background: #4f46e5; }
+
+  .advice-title { margin-top: 44px; font-size: 20px; font-weight: 800; color: #111827; }
+  .advice-list { margin-top: 16px; display: flex; flex-direction: column; gap: 14px; }
+  .advice { display: flex; gap: 14px; background: #f8f9fc; border-radius: 12px; padding: 20px 22px; }
+  .advice .icon { width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; background: #eef0ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; }
+  .advice h4 { font-size: 17px; font-weight: 700; color: #1f2937; margin-bottom: 4px; }
+  .advice p { font-size: 15px; color: #6b7280; line-height: 1.7; }
+
+  .share-row { margin-top: 44px; text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- 屏1 首页 -->
+<section class="screen home">
+  <div class="brand"><span class="dot"></span>learnMBTI</div>
+  <h1>孩子的学习人格测试</h1>
+  <p class="desc">每个孩子都有自己的学习方式——<b>有人先动手，有人先规划</b>；有人爱独闯，有人爱结伴。<br>16 种学习人格，帮你读懂孩子天赋背后的密码。</p>
+  <div class="btn-wrap"><a class="btn">开始测试</a></div>
+  <div class="meta">约 3 分钟 · 家长视角作答 · 结果仅供陪伴参考</div>
+</section>
+
+<!-- 屏2 答题页 -->
+<section class="screen quiz">
+  <div class="quiz-top">
+    <div class="brand"><span class="dot"></span>learnMBTI</div>
+    <div class="counter"><b>3</b> / 35</div>
+  </div>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <div class="quiz-body">
+    <div class="q-dim">起手式 · 情境一</div>
+    <div class="q-text">孩子拿到一套从没玩过的新积木，TA 的第一反应更像是——</div>
+    <div class="opts">
+      <div class="opt"><div class="letter">A</div>拆开就上手拼，拼错了拆掉重来，完全不用看图纸</div>
+      <div class="opt"><div class="letter">B</div>先把图纸摊开研究一遍，问清楚每一块是干嘛的再动手</div>
+    </div>
+  </div>
+  <div class="q-note">按孩子平时最常出现的反应作答，没有对错。</div>
+</section>
+
+<!-- 屏3 结果页 -->
+<section class="screen result">
+  <div class="quiz-top">
+    <div class="brand"><span class="dot"></span>learnMBTI</div>
+    <div class="counter" style="color:#9ca3af">结果报告</div>
+  </div>
+  <div class="result-head">
+    <div class="badge"><div class="code">AFLW</div><div class="small">学习人格</div></div>
+    <h2>手感派探险家</h2>
+    <div class="traits">先动手派 · 看大局派 · 独行侠 · 作品党</div>
+    <p class="summary">TA 是那种"先跳进水里再学游泳"的孩子。比起听讲解，TA 更相信自己的手和眼睛。让 TA 安静地摸索、犯错、再修正，就是最好的学习。</p>
+  </div>
+
+  <div class="axes">
+    <div class="axis-row">
+      <div class="axis-label"><span class="left">先动手派 72%</span><span class="right">先规划派 28%</span></div>
+      <div class="axis-track"><div class="axis-fill" style="width:72%"></div></div>
+    </div>
+    <div class="axis-row">
+      <div class="axis-label"><span class="left">看大局派 65%</span><span class="right">抠细节派 35%</span></div>
+      <div class="axis-track"><div class="axis-fill" style="width:65%"></div></div>
+    </div>
+    <div class="axis-row">
+      <div class="axis-label"><span class="left">独行侠 78%</span><span class="right">搭子狂 22%</span></div>
+      <div class="axis-track"><div class="axis-fill" style="width:78%"></div></div>
+    </div>
+    <div class="axis-row">
+      <div class="axis-label"><span class="left">作品党 60%</span><span class="right">通透党 40%</span></div>
+      <div class="axis-track"><div class="axis-fill" style="width:60%"></div></div>
+    </div>
+  </div>
+
+  <div class="advice-title">这样帮 TA 学得更顺</div>
+  <div class="advice-list">
+    <div class="advice">
+      <div class="icon">1</div>
+      <div><h4>陪玩策略 · 少讲，多陪做</h4><p>和 TA 一起动手试错，让 TA 自己撞出答案，学到的东西会牢得多。</p></div>
+    </div>
+    <div class="advice">
+      <div class="icon">2</div>
+      <div><h4>环境支持 · 给 TA 一块安静领地</h4><p>别频繁打断，也别在旁边"指导"，安静守着就好。</p></div>
+    </div>
+    <div class="advice">
+      <div class="icon">3</div>
+      <div><h4>验收方式 · 让 TA 做个作品出来</h4><p>问"你学会了什么"不如说"做个东西给我看"。</p></div>
+    </div>
+  </div>
+
+  <div class="share-row"><a class="btn">分享这份报告</a></div>
+  <div class="footer-note">learnMBTI · 报告仅供家长参考，不构成教育诊断</div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>learnMBTI · 孩子学习人格测试（可交互 Demo v1.2 · H5 移动端适配）</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { overflow-x: hidden; }
+  body {
+    font-family: "Inter", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    background: #ffffff; color: #1f2937; width: 100%; max-width: 750px; margin: 0 auto;
+    -webkit-font-smoothing: antialiased; -webkit-tap-highlight-color: rgba(0,0,0,0);
+  }
+  .screen { padding: 48px 60px 44px; }
+  .hidden { display: none !important; }
+  .brand { display: flex; align-items: center; gap: 10px; font-size: 26px; font-weight: 800; color: #111827; }
+  .brand .dot { width: 22px; height: 22px; border-radius: 6px; background: linear-gradient(135deg,#4f46e5,#7c3aed); }
+  .brand span.sub { font-size: 15px; font-weight: 500; color: #9ca3af; margin-left: 2px; }
+  .btn {
+    display: inline-block; padding: 18px 56px; background: #4f46e5; color: #fff;
+    font-size: 22px; font-weight: 700; border-radius: 999px; letter-spacing: 2px;
+    box-shadow: 0 8px 24px rgba(79,70,229,.28); cursor: pointer; border: none;
+    transition: transform .15s, box-shadow .15s; min-height: 48px; line-height: 1.2;
+  }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(79,70,229,.34); }
+  .btn.ghost {
+    background: #ffffff; color: #6b7280; box-shadow: none;
+    border: 2px solid #e5e7eb; font-size: 17px; padding: 14px 34px; letter-spacing: 1px;
+  }
+  .btn.ghost:hover { border-color: #c7cbd4; transform: none; box-shadow: none; }
+  .btn.small { font-size: 17px; padding: 13px 32px; letter-spacing: 1px; }
+  .btn-row { display: flex; justify-content: center; gap: 18px; margin-top: 40px; flex-wrap: wrap; }
+  .footer-note { margin-top: 30px; text-align: center; font-size: 14px; color: #b0b8c4; }
+
+  /* 首页 */
+  .home { min-height: 1120px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .home h1 { margin-top: 40px; font-size: 52px; font-weight: 900; line-height: 1.4; color: #111827; }
+  .home h1 .accent { color: #4f46e5; }
+  .home .desc { margin-top: 26px; font-size: 21px; color: #6b7280; line-height: 1.9; max-width: 560px; }
+  .home .desc b { color: #374151; }
+  .home .btn-wrap { margin-top: 52px; }
+  .home .meta { margin-top: 28px; font-size: 15px; color: #9ca3af; letter-spacing: 1px; }
+
+  /* 前置选科屏 */
+  .subjects { min-height: 1120px; display: flex; flex-direction: column; }
+  .subjects .s-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .s-kicker { text-align: center; font-size: 15px; color: #9ca3af; letter-spacing: 3px; }
+  .s-title { margin-top: 18px; text-align: center; font-size: 34px; font-weight: 800; line-height: 1.5; color: #111827; }
+  .s-sub { margin-top: 12px; text-align: center; font-size: 16px; color: #6b7280; }
+  .subject-grid { margin-top: 46px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .subject-card {
+    background: #ffffff; border: 2px solid #e5e7eb; border-radius: 16px;
+    padding: 26px 24px; text-align: center; font-size: 18px; line-height: 1.7; color: #374151;
+    cursor: pointer; transition: border-color .15s, box-shadow .15s, transform .15s;
+  }
+  .subject-card .s-ico { display: inline-block; width: 40px; height: 40px; line-height: 40px; border-radius: 12px; background: #eef0f4; color: #6b7280; font-size: 19px; font-weight: 800; margin-bottom: 12px; }
+  .subject-card:hover { border-color: #4f46e5; box-shadow: 0 10px 24px rgba(79,70,229,.10); transform: translateY(-2px); }
+  .subject-card:hover .s-ico { background: #4f46e5; color: #fff; }
+  .subject-card.selected { border-color: #4f46e5; box-shadow: 0 10px 24px rgba(79,70,229,.14); }
+  .subject-card.selected .s-ico { background: #4f46e5; color: #fff; }
+  .subject-card .s-tag { display: inline-block; margin-top: 10px; font-size: 12px; color: #4f46e5; background: #eef0ff; border-radius: 999px; padding: 2px 10px; font-weight: 600; }
+  .s-tip { margin-top: 22px; text-align: center; font-size: 14px; color: #b0b8c4; }
+
+  /* 答题页 */
+  .quiz { min-height: 1120px; display: flex; flex-direction: column; }
+  .quiz-top { display: flex; align-items: center; justify-content: space-between; }
+  .quiz-top .counter { font-size: 17px; color: #6b7280; font-weight: 600; }
+  .quiz-top .counter b { color: #4f46e5; font-size: 22px; }
+  .progress-track { margin-top: 18px; height: 6px; background: #eef0f4; border-radius: 999px; }
+  .progress-fill { height: 100%; width: 12%; background: #4f46e5; border-radius: 999px; transition: width .4s; }
+  .quiz-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .q-dim { text-align: center; font-size: 15px; color: #9ca3af; letter-spacing: 3px; }
+  .q-text { margin-top: 22px; text-align: center; font-size: 34px; font-weight: 800; line-height: 1.6; color: #111827; }
+  .opts { margin-top: 56px; display: flex; gap: 20px; }
+  .opt {
+    flex: 1; background: #ffffff; border: 2px solid #e5e7eb; border-radius: 16px;
+    padding: 30px 24px; text-align: center; font-size: 20px; line-height: 1.7; color: #374151;
+    cursor: pointer; transition: border-color .15s, box-shadow .15s, transform .15s;
+  }
+  .opt .letter { display: inline-block; width: 34px; height: 34px; line-height: 34px; border-radius: 50%; background: #eef0f4; color: #6b7280; font-size: 16px; font-weight: 700; margin-bottom: 14px; }
+  .opt:hover { border-color: #4f46e5; box-shadow: 0 10px 24px rgba(79,70,229,.10); transform: translateY(-2px); }
+  .opt:hover .letter { background: #4f46e5; color: #fff; }
+  .opt.selected { border-color: #4f46e5; box-shadow: 0 10px 24px rgba(79,70,229,.14); }
+  .opt.selected .letter { background: #4f46e5; color: #fff; }
+  .q-note { margin-top: 44px; text-align: center; font-size: 14px; color: #b0b8c4; }
+
+  /* 结果页 */
+  .result-head { text-align: center; padding-top: 20px; }
+  .badge {
+    width: 150px; height: 150px; border-radius: 24px;
+    background: linear-gradient(135deg,#4f46e5,#7c3aed); color: #fff;
+    display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+    box-shadow: 0 16px 40px rgba(79,70,229,.30); margin-top: 12px;
+  }
+  .badge .code { font-size: 30px; font-weight: 900; letter-spacing: 3px; }
+  .badge .small { font-size: 12px; opacity: .8; margin-top: 4px; }
+  .result-head h2 { margin-top: 28px; font-size: 44px; font-weight: 900; color: #111827; }
+  .result-head .traits { margin-top: 10px; font-size: 17px; color: #6b7280; letter-spacing: 2px; }
+  .result-head .summary { margin-top: 24px; font-size: 21px; color: #4b5563; line-height: 1.9; max-width: 600px; margin-left: auto; margin-right: auto; }
+  .result-head .tone-line { margin-top: 12px; font-size: 14px; color: #9ca3af; }
+
+  .axes { margin-top: 48px; display: flex; flex-direction: column; gap: 26px; }
+  .axis-label { display: flex; justify-content: space-between; font-size: 16px; color: #6b7280; margin-bottom: 8px; font-weight: 600; }
+  .axis-label .left { color: #4f46e5; }
+  .axis-track { height: 10px; background: #eef0f4; border-radius: 999px; position: relative; overflow: hidden; }
+  .axis-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 999px; background: #4f46e5; }
+  .axis-fill.edge { background: #f59e0b; }
+  .edge-tag { display: inline-block; margin-left: 8px; font-size: 12px; color: #b45309; background: #fef3c7; border-radius: 999px; padding: 2px 8px; font-weight: 600; white-space: nowrap; }
+  .edge-banner { margin-top: 28px; background: #fffbeb; border: 1px solid #fde68a; color: #92400e; border-radius: 12px; padding: 14px 18px; font-size: 15px; line-height: 1.7; text-align: center; word-break: break-word; }
+
+  .advice-title { margin-top: 44px; font-size: 20px; font-weight: 800; color: #111827; }
+  .advice-list { margin-top: 16px; display: flex; flex-direction: column; gap: 14px; }
+  .advice { display: flex; gap: 14px; background: #f8f9fc; border-radius: 12px; padding: 20px 22px; }
+  .advice .icon { width: 40px; height: 40px; flex-shrink: 0; border-radius: 10px; background: #eef0ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 800; }
+  .advice h4 { font-size: 17px; font-weight: 700; color: #1f2937; margin-bottom: 4px; }
+  .advice p { font-size: 15px; color: #6b7280; line-height: 1.7; }
+
+  /* 方法层 */
+  .method-block { margin-top: 48px; background: #fafbff; border: 1px solid #e6e8f5; border-radius: 16px; padding: 26px 28px; }
+  .method-kicker { font-size: 14px; color: #7c3aed; font-weight: 700; letter-spacing: 2px; }
+  .method-title { margin-top: 8px; font-size: 22px; font-weight: 800; color: #111827; }
+  .method-list { margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+  .method-item { display: flex; gap: 12px; background: #ffffff; border-radius: 12px; padding: 16px 18px; }
+  .method-item .m-dot { width: 30px; height: 30px; flex-shrink: 0; border-radius: 8px; background: #eef0ff; color: #4f46e5; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; }
+  .method-item p { font-size: 15px; color: #374151; line-height: 1.7; }
+  .week-card { margin-top: 16px; background: linear-gradient(135deg,#4f46e5,#7c3aed); border-radius: 12px; padding: 18px 20px; color: #fff; }
+  .week-card .w-tag { font-size: 13px; font-weight: 700; letter-spacing: 2px; opacity: .85; }
+  .week-card p { margin-top: 6px; font-size: 16px; line-height: 1.7; font-weight: 600; }
+
+  /* 另两科速览 */
+  .quick-look { margin-top: 18px; background: #f3f4f8; border-radius: 12px; padding: 16px 18px; }
+  .quick-look .ql-title { font-size: 14px; font-weight: 700; color: #6b7280; }
+  .quick-look .ql-item { margin-top: 8px; font-size: 14px; color: #374151; line-height: 1.7; }
+  .quick-look .ql-item b { color: #4f46e5; }
+
+  /* 档案钩子 */
+  .archive-block { margin-top: 48px; text-align: center; background: #f8f9fc; border-radius: 16px; padding: 26px 24px; }
+  .archive-block .a-title { font-size: 18px; font-weight: 800; color: #111827; }
+  .archive-block .a-sub { margin-top: 8px; font-size: 14px; color: #6b7280; line-height: 1.7; }
+  .archive-block .btn-row { margin-top: 24px; }
+
+  .share-row { margin-top: 44px; text-align: center; }
+
+  /* ===== H5 移动端适配（参考宽度 375px，触控热区 ≥44px） ===== */
+  @media (max-width: 480px) {
+    body { min-width: 0; font-size: 15px; }
+    .screen { padding: 22px 18px 34px; }
+    .brand { font-size: 20px; gap: 8px; }
+    .brand .dot { width: 18px; height: 18px; border-radius: 5px; }
+
+    /* 按钮：窄屏全宽、热区不低于 44px */
+    .btn { display: block; width: 100%; text-align: center; padding: 15px 24px; font-size: 18px; letter-spacing: 1px; min-height: 52px; }
+    .btn.ghost { font-size: 15px; padding: 13px 22px; min-height: 46px; border-width: 2px; }
+    .btn.small { font-size: 15px; padding: 13px 22px; min-height: 46px; }
+    .btn-row { flex-direction: column; align-items: stretch; gap: 14px; margin-top: 28px; }
+    .btn-row .btn { width: 100%; }
+
+    /* 首页 */
+    .home { min-height: 100vh; padding-top: 32px; padding-bottom: 32px; }
+    .home h1 { margin-top: 26px; font-size: 31px; }
+    .home .desc { margin-top: 16px; font-size: 15.5px; line-height: 1.85; max-width: 100%; }
+    .home .btn-wrap { margin-top: 34px; width: 100%; }
+    .home .meta { margin-top: 18px; font-size: 12.5px; letter-spacing: .5px; }
+
+    /* 选科屏：单列卡片 */
+    .subjects { min-height: 100vh; }
+    .s-title { font-size: 25px; }
+    .s-sub { font-size: 14px; line-height: 1.7; }
+    .subject-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 30px; }
+    .subject-card { min-height: 72px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 14px; font-size: 16px; }
+    .subject-card .s-ico { width: 32px; height: 32px; line-height: 32px; font-size: 15px; margin-bottom: 6px; }
+    .subject-card .s-tag { margin-top: 6px; }
+    .s-tip { margin-top: 18px; font-size: 13px; }
+
+    /* 答题页：选项纵向堆叠，一屏可点 */
+    .quiz { min-height: 100vh; }
+    .quiz-top .counter { font-size: 15px; }
+    .quiz-top .counter b { font-size: 19px; }
+    .progress-track { margin-top: 14px; }
+    .q-dim { font-size: 13px; letter-spacing: 2px; }
+    .q-text { margin-top: 18px; font-size: 24px; line-height: 1.55; }
+    .opts { flex-direction: column; gap: 14px; margin-top: 30px; }
+    .opt { width: 100%; min-height: 96px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 16px; font-size: 16.5px; }
+    .opt .letter { width: 30px; height: 30px; line-height: 30px; font-size: 14px; margin-bottom: 8px; }
+    .q-note { margin-top: 28px; font-size: 13px; }
+
+    /* 结果页：卡片化、留白压缩 */
+    .result-head { padding-top: 8px; }
+    .badge { width: 104px; height: 104px; border-radius: 18px; margin-top: 8px; }
+    .badge .code { font-size: 22px; letter-spacing: 2px; }
+    .badge .small { font-size: 11px; }
+    .result-head h2 { margin-top: 20px; font-size: 27px; }
+    .result-head .traits { font-size: 13.5px; letter-spacing: 1px; }
+    .result-head .summary { margin-top: 18px; font-size: 15.5px; line-height: 1.85; max-width: 100%; }
+    .result-head .tone-line { font-size: 13px; }
+
+    .axes { margin-top: 30px; gap: 18px; }
+    .axis-label { font-size: 13.5px; }
+    .edge-tag { margin-left: 5px; font-size: 10.5px; padding: 1px 7px; }
+    .edge-banner { margin-top: 22px; padding: 12px 13px; font-size: 13.5px; }
+
+    .advice-title { margin-top: 30px; font-size: 17px; }
+    .advice-list { gap: 12px; }
+    .advice { padding: 15px 13px; gap: 11px; }
+    .advice .icon { width: 34px; height: 34px; font-size: 16px; border-radius: 9px; }
+    .advice h4 { font-size: 15.5px; }
+    .advice p { font-size: 14px; line-height: 1.75; }
+
+    .method-block { margin-top: 30px; padding: 20px 15px; }
+    .method-title { font-size: 18.5px; }
+    .method-item { padding: 14px 13px; gap: 10px; }
+    .method-item .m-dot { width: 28px; height: 28px; font-size: 14px; }
+    .method-item p { font-size: 14px; }
+    .week-card { padding: 16px 15px; }
+    .week-card p { font-size: 15px; }
+    .quick-look { padding: 14px 13px; }
+    .quick-look .ql-title { font-size: 13px; }
+    .quick-look .ql-item { font-size: 13.5px; }
+
+    .archive-block { margin-top: 30px; padding: 22px 16px; }
+    .archive-block .btn-row { margin-top: 20px; }
+    .share-row { margin-top: 30px; }
+    .footer-note { margin-top: 24px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 屏1 首页 -->
+<section id="home" class="screen home">
+  <div class="brand"><span class="dot"></span>learnMBTI</div>
+  <h1>孩子的学习人格测试</h1>
+  <p class="desc">每个孩子都有自己的学习方式——<b>有人先动手，有人先规划</b>；有人爱独闯，有人爱结伴。<br>16 种学习人格 × 正在学的科目，帮你读懂孩子天赋背后的密码。</p>
+  <div class="btn-wrap"><a class="btn" onclick="showSubjects()">开始测试</a></div>
+  <div class="meta">约 5 分钟 · 35 道情境题 · 家长视角作答 · 结果仅供陪伴参考</div>
+</section>
+
+<!-- 屏1.5 前置选科 -->
+<section id="subjects" class="screen subjects hidden">
+  <div class="quiz-top">
+    <div class="brand"><span class="dot"></span>learnMBTI</div>
+    <div class="counter" style="color:#9ca3af">先选科目</div>
+  </div>
+  <div class="s-body">
+    <div class="s-kicker">STEP 0 · 选科</div>
+    <div class="s-title">孩子最近主要在学什么？</div>
+    <div class="s-sub">多选，最多 3 项；不选也能继续，会给出通用版报告</div>
+    <div class="subject-grid">
+      <div class="subject-card" data-sub="memory" onclick="toggleSubject(this)">
+        <div class="s-ico">记</div>背单词、记概念、学定义（生物/历史等）
+        <div class="s-tag">记忆信息型</div>
+      </div>
+      <div class="subject-card" data-sub="think" onclick="toggleSubject(this)">
+        <div class="s-ico">理</div>做数学题、编程、逻辑推理
+        <div class="s-tag">思考型技能</div>
+      </div>
+      <div class="subject-card" data-sub="language" onclick="toggleSubject(this)">
+        <div class="s-ico">言</div>学英语、演讲、写作、表达
+        <div class="s-tag">语言型技能</div>
+      </div>
+      <div class="subject-card" data-sub="sport" onclick="toggleSubject(this)">
+        <div class="s-ico">练</div>练琴、画画、体育、打字、手工
+        <div class="s-tag">运动型技能</div>
+      </div>
+    </div>
+    <div class="s-tip" id="sTip">已选 0 / 3 项</div>
+    <div class="btn-row">
+      <a class="btn ghost" onclick="startQuiz()">跳过，直接测试</a>
+      <a class="btn" onclick="startQuiz()">开始答题 →</a>
+    </div>
+  </div>
+</section>
+
+<!-- 屏2 答题页 -->
+<section id="quiz" class="screen quiz hidden">
+  <div class="quiz-top">
+    <div class="brand"><span class="dot"></span>learnMBTI</div>
+    <div class="counter"><b id="qNow">1</b> / <span id="qTotal">35</span></div>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="qBar"></div></div>
+  <div class="quiz-body">
+    <div class="q-dim" id="qDim"></div>
+    <div class="q-text" id="qText"></div>
+    <div class="opts" id="qOpts"></div>
+  </div>
+  <div class="q-note">按孩子平时最常出现的反应作答，没有对错。</div>
+</section>
+
+<!-- 屏3 结果页 -->
+<section id="result" class="screen result hidden">
+  <div class="quiz-top">
+    <div class="brand"><span class="dot"></span>learnMBTI</div>
+    <div class="counter" style="color:#9ca3af">结果报告</div>
+  </div>
+  <div class="result-head">
+    <div class="badge"><div class="code" id="rCode"></div><div class="small">学习人格</div></div>
+    <h2 id="rName"></h2>
+    <div class="traits" id="rTraits"></div>
+    <p class="summary" id="rSummary"></p>
+    <div class="tone-line" id="rToneLine"></div>
+  </div>
+  <div class="axes" id="rAxes"></div>
+  <div class="edge-banner hidden" id="rEdgeBanner"></div>
+  <div class="advice-title">这样帮 TA 学得更顺</div>
+  <div class="advice-list" id="rAdvice"></div>
+
+  <!-- 方法层（②） -->
+  <div class="method-block hidden" id="rMethod">
+    <div class="method-kicker">方法层 · 学科专属</div>
+    <div class="method-title" id="rMethodTitle"></div>
+    <div class="method-list" id="rMethodList"></div>
+    <div class="week-card">
+      <div class="w-tag">本周就能试</div>
+      <p id="rWeek"></p>
+    </div>
+    <div class="quick-look hidden" id="rQuick">
+      <div class="ql-title">另选科目速览</div>
+      <div id="rQuickList"></div>
+    </div>
+  </div>
+
+  <!-- 档案钩子（③） -->
+  <div class="archive-block">
+    <div class="a-title">把这份报告存进孩子的成长档案</div>
+    <div class="a-sub">保存后可随时回来对比复测，看看孩子的学习偏好有没有变化。</div>
+    <div class="btn-row">
+      <a class="btn small" id="rSaveBtn" onclick="saveArchive()">保存档案</a>
+      <a class="btn ghost" onclick="retest()">重新测试</a>
+    </div>
+  </div>
+
+  <div class="share-row"><a class="btn" onclick="alert('分享卡将在这里生成称号海报')">分享这份报告</a></div>
+  <div class="footer-note">learnMBTI · 报告仅供家长参考，不构成教育诊断</div>
+</section>
+
+<script>
+/* ===== 数据：35 题（每维 2-3 题，含 3 道反向题） ===== */
+var QUESTIONS = [
+  { dim: "起手式", text: "孩子拿到一套从没玩过的新积木，TA 的第一反应更像是——",
+    a: { label: "拆开就上手拼，拼错了拆掉重来，完全不用看图纸", pole: "start" },
+    b: { label: "先把图纸摊开研究一遍，问清楚每一块是干嘛的再动手", pole: "plan" } },
+  { dim: "起手式", text: "老师布置一项新任务，孩子通常会——",
+    a: { label: "先问清楚要求再开始，确认每一步没跑偏", pole: "plan" },
+    b: { label: "直接开干，边做边改，先动起来再说", pole: "start" } },
+  { dim: "起手式", text: "带孩子去一个从没去过的游乐场，TA 会——",
+    a: { label: "冲进去先玩最想玩的项目，玩完再说", pole: "start" },
+    b: { label: "先逛一圈，看有哪些项目再决定先玩哪个", pole: "plan" } },
+  { dim: "起手式", text: "孩子收到一个从没玩过的新玩具（比如遥控车），TA 更常——",
+    a: { label: "拆开包装就上手玩，说明书先扔一边", pole: "start" },
+    b: { label: "先把说明书读一遍，搞清楚每个按钮再玩", pole: "plan" } },
+  { dim: "起手式", text: "孩子说要画一幅画，TA 通常——",
+    a: { label: "拿起笔就画，画着画着才知道自己想画什么", pole: "start" },
+    b: { label: "先在脑子里想好画什么、怎么画，再动笔", pole: "plan" } },
+  { dim: "起手式", text: "孩子第一次看大人做饭或做家务，TA 更倾向——",
+    a: { label: "抢着上手自己试，边做边学", pole: "start" },
+    b: { label: "先看大人做一遍，心里有数了再自己来", pole: "plan" } },
+  { dim: "起手式", text: "孩子拼一幅拼图时，TA 更常——",
+    a: { label: "先研究包装上的完整图，按规律找位置", pole: "plan" },
+    b: { label: "抓起拼块就试着拼，错了再换", pole: "start" } },
+  { dim: "起手式", text: "孩子第一次玩一个新游戏或新应用，TA 会——",
+    a: { label: "自己到处乱按乱点，自己摸索", pole: "start" },
+    b: { label: "先问你怎么玩，或者先看教程再动手", pole: "plan" } },
+  { dim: "起手式", text: "孩子搭乐高或拼装玩具时，TA 更常——",
+    a: { label: "按自己的创意随意拼，不按图纸来", pole: "start" },
+    b: { label: "照图纸一格格对照拼，拼完再改", pole: "plan" } },
+
+  { dim: "信息口味", text: "孩子学一个新游戏（如下棋）时，更常问的是——",
+    a: { label: "“这个怎么玩？好玩吗”（先了解整体）", pole: "big" },
+    b: { label: "“这个规则为什么这样定？”（钻进细节）", pole: "detail" } },
+  { dim: "信息口味", text: "孩子拿到一本科普书，TA 会——",
+    a: { label: "先翻目录，大概知道整本书讲什么再细看", pole: "big" },
+    b: { label: "直接翻到最感兴趣那一页，看半天", pole: "detail" } },
+  { dim: "信息口味", text: "带孩子去博物馆，TA 更像——",
+    a: { label: "走马观花把全馆都看一遍", pole: "big" },
+    b: { label: "盯着一件展品看很久，问很多问题", pole: "detail" } },
+  { dim: "信息口味", text: "孩子看一部动画片或电影，TA 更关注——",
+    a: { label: "整个故事讲了什么、结局怎样", pole: "big" },
+    b: { label: "某个角色或某个场景的小细节", pole: "detail" } },
+  { dim: "信息口味", text: "孩子学一个新领域（比如历史）时，TA 更先记住——",
+    a: { label: "具体的事件、年份和人物", pole: "detail" },
+    b: { label: "整个时代的背景和大致脉络", pole: "big" } },
+  { dim: "信息口味", text: "孩子玩拼图时，TA 更常——",
+    a: { label: "先看整体图案轮廓，从大色块区域拼起", pole: "big" },
+    b: { label: "从某个局部的小细节入手，一块块找", pole: "detail" } },
+  { dim: "信息口味", text: "孩子看绘本或听故事时，TA 更常——",
+    a: { label: "听完整个故事，急着问后面发生了什么", pole: "big" },
+    b: { label: "停下来反复问这一页的细节", pole: "detail" } },
+  { dim: "信息口味", text: "孩子做手工（比如折纸或粘土）时，TA 更在意——",
+    a: { label: "先了解整个作品最终长什么样再动手", pole: "big" },
+    b: { label: "先研究清楚某一个部件怎么做", pole: "detail" } },
+  { dim: "信息口味", text: "说起一次家庭旅行，孩子最先兴奋的是——",
+    a: { label: "住哪里、吃什么、每天怎么安排", pole: "detail" },
+    b: { label: "去哪些地方、整体行程是什么", pole: "big" } },
+  { dim: "学习搭子", text: "周末拿到新绘本或新玩具时，孩子通常——",
+    a: { label: "自己安静地待着玩很久", pole: "alone" },
+    b: { label: "马上拉着你或小伙伴一起玩", pole: "gang" } },
+  { dim: "学习搭子", text: "孩子遇到一道不会做的题，TA 更常——",
+    a: { label: "马上喊你或同学帮忙，一起想办法", pole: "gang" },
+    b: { label: "自己憋着反复琢磨，实在不行才求助", pole: "alone" } },
+  { dim: "学习搭子", text: "孩子学一门新技能（比如游泳、乐器），TA 更喜欢——",
+    a: { label: "一个人慢慢练，不喜欢被打扰", pole: "alone" },
+    b: { label: "一定要找伴儿一起学，才学得下去", pole: "gang" } },
+  { dim: "学习搭子", text: "孩子在家做作业时，TA 更常——",
+    a: { label: "自己关在房间安静地做", pole: "alone" },
+    b: { label: "待在客厅或有人陪着的地方做", pole: "gang" } },
+  { dim: "学习搭子", text: "孩子看完一本绘本或一部动画片，TA 更常——",
+    a: { label: "马上找人聊剧情、问你觉得怎么样", pole: "gang" },
+    b: { label: "自己回味，自己消化里面的内容", pole: "alone" } },
+  { dim: "学习搭子", text: "孩子搭乐高或做手工时，TA 更倾向——",
+    a: { label: "自己搭自己的，享受一个人的世界", pole: "alone" },
+    b: { label: "拉着你或朋友一起搭一个大的", pole: "gang" } },
+  { dim: "学习搭子", text: "孩子参加游戏或体育活动时，TA 更开心的是——",
+    a: { label: "和队友朋友一起玩、一起配合", pole: "gang" },
+    b: { label: "自己玩、自己练，也有自己的乐趣", pole: "alone" } },
+  { dim: "学习搭子", text: "到了暑假或周末，孩子通常更想——",
+    a: { label: "自己安排自己的时间，自由自在", pole: "alone" },
+    b: { label: "约上小伙伴一起过，热闹才有意思", pole: "gang" } },
+
+  { dim: "验收执念", text: "孩子学完一个手工或技能后，TA 更在意——",
+    a: { label: "一定要做出个成品拿给你看", pole: "work" },
+    b: { label: "跟你说“我懂了”，就很满足", pole: "clear" } },
+  { dim: "验收执念", text: "孩子画完一幅画，TA 更在意的是——",
+    a: { label: "“我搞懂这个画法了吗”（弄明白就行）", pole: "clear" },
+    b: { label: "“画得好不好看、能不能贴墙上”（要有作品）", pole: "work" } },
+  { dim: "验收执念", text: "孩子练完琴、练完字或背完课文后，TA 更常——",
+    a: { label: "要展示给你听或给你看，才算练完", pole: "work" },
+    b: { label: "自己觉得会了、记住了就满意", pole: "clear" } },
+  { dim: "验收执念", text: "孩子做完一本练习册或一套题，TA 更在意——",
+    a: { label: "全部做对、结果漂亮才安心", pole: "work" },
+    b: { label: "弄懂了方法就行，错几道没关系", pole: "clear" } },
+  { dim: "验收执念", text: "孩子听完一个故事，TA 更满足的是——",
+    a: { label: "能讲出故事的道理、自己心里明白了", pole: "clear" },
+    b: { label: "能完整复述或表演出来，才算真听完", pole: "work" } },
+  { dim: "验收执念", text: "孩子拼完一个乐高或模型，TA 更常——",
+    a: { label: "摆在显眼处，想让大家都能看到", pole: "work" },
+    b: { label: "拼完自己高兴就行，收起来也没关系", pole: "clear" } },
+  { dim: "验收执念", text: "孩子学完一首歌或一段舞蹈，TA 更在意——",
+    a: { label: "一定要完整表演一遍才过瘾", pole: "work" },
+    b: { label: "自己会唱会跳就行，不一定要展示", pole: "clear" } },
+  { dim: "验收执念", text: "孩子做完一件家务或做了一次饭，TA 更在意——",
+    a: { label: "做得好不好、干得干不干净（要成果）", pole: "work" },
+    b: { label: "“我学会这件事了”（技能到手就行）", pole: "clear" } },
+  { dim: "验收执念", text: "孩子复习完一个阶段的内容，TA 更踏实的是——",
+    a: { label: "做出了个成果（作品、总结或展示）", pole: "work" },
+    b: { label: "心里明白这些知识点了", pole: "clear" } }
+];
+
+/* ===== 数据：16 型（称号 / 通用人设骨架） ===== */
+var TYPES = {
+  "AF_LW": { name: "手感派探险家", persona: "TA 是那种“先跳进水里再学游泳”的孩子。比起听讲解，TA 更相信自己的手和眼睛。让 TA 安静地摸索、犯错、再修正，就是最好的学习。" },
+  "PF_LW": { name: "蓝图派建筑师", persona: "TA 是那种“先看清整张地图才肯动工”的孩子。TA 需要全局图景和清晰的步骤，规划本身就是 TA 学习的一部分。" },
+  "AD_LW": { name: "拆解派工匠", persona: "TA 的手比嘴快，喜欢把东西拆开看里面长什么样。允许 TA 拆、允许 TA 错，TA 会从零件里长出自己的学问。" },
+  "PD_LW": { name: "步骤派工程师", persona: "TA 按部就班、稳扎稳打，每一步都要踏实。给 TA 清单和流程图，TA 会用节奏赢得最后的胜利。" },
+  "AF_LT": { name: "手感派思考家", persona: "TA 自己试、自己悟，弄明白才安心。别急着考 TA，给 TA 探索型任务，TA 会在安静中想通很多事。" },
+  "PF_LT": { name: "蓝图派谋士", persona: "TA 先看清全局，再慢慢想通，不喜欢被催着要结论。和 TA 多讨论、多提问，TA 会给出自己的答案。" },
+  "AD_LT": { name: "拆解派学者", persona: "TA 从细节里钻出学问，每一个“为什么”都是入口。满足 TA 的好奇，给 TA 深度资料，TA 会越钻越深。" },
+  "PD_LT": { name: "步骤派研究员", persona: "TA 一步一步推理，直到完全想通为止。给 TA 推理素材和充分时间，TA 会还你一套严密的思考。" },
+  "AF_GW": { name: "点火派领跑者", persona: "TA 动手就要做出成品，还要拉着大家一起冲。给 TA 一个小组和明确目标，TA 会带着团队把东西做成。" },
+  "AF_GT": { name: "点火派灵感家", persona: "TA 边做边聊，灵感靠碰撞出来。陪 TA 头脑风暴、一起探索，TA 的想法会在交流中长出来。" },
+  "PF_GW": { name: "战略派指挥官", persona: "TA 先想清楚全局，再组织大家一起做出成品。给 TA 目标和分工，TA 会带着团队稳稳交付。" },
+  "PF_GT": { name: "战略派智囊", persona: "TA 想明白才愿意分享，越聊越透。给 TA 讨论局和输出机会，TA 的理解会在表达中定型。" },
+  "AD_GW": { name: "拆解派组长", persona: "TA 从细节出发，边拆边带大家把东西做成。给 TA 一个小项目和分工，TA 会组织同伴一起交付。" },
+  "AD_GT": { name: "拆解派侦探", persona: "TA 拆细节、找规律、拉人验证，像个小侦探。给 TA 谜题型任务，再把 TA 拉来当讨论对手。" },
+  "PD_GW": { name: "流程派督造师", persona: "TA 把流程安排得明明白白，再带队保质保量交付。给 TA 一个项目和验收标准，TA 会带着大家按时交出成果。" },
+  "PD_GT": { name: "流程派管家", persona: "TA 把每一步都弄懂，还要讲给大家听。安排 TA 复盘和分享，TA 会在输出里把知识焊牢。" }
+};
+
+/* ===== 数据：4 个高频学科（记忆/思考/语言/运动）交叉词库与方法库 =====
+   每学科：场景句（start 版 / plan 版）、3 条建议（节奏/验收/陪法，各按维度两版）、
+   方法卡 2-3 条、本周小动作、另科速览一句话。
+   16 型通过 code 的 4 个维度（A/P、F/D、L/G、W/T）自动拼装，
+   保证「同型不同科」「同科不同型」文案均明显不同。 */
+var SUBJECTS = {
+  memory: {
+    name: "记背类",
+    option: "背单词、记概念、学定义",
+    sceneStart: "TA 学要背记的内容时典型是“先开口背再说”：还没看完整段就先念，念错了再回头看原文。这不是马虎，是 TA 用“出声”来锁住记忆——光让 TA 默读反而困。",
+    scenePlan: "TA 学要背记的内容时典型是“先列提纲再背”：先把要记的内容理成清单、划出重点，才一段一段背。别催 TA“快点背”，TA 要先看到全貌才安心。",
+    advRhythmStart: "节奏：让 TA 先背后核——先自己背一遍，再对照原文挑错，别一上来就要求一字不差",
+    advRhythmPlan: "节奏：给 TA 理框架的时间——先把要记的列成小清单，再逐条背，别催",
+    advCheckWork: "验收：看“讲得出”——让 TA 合上书给你讲一遍，能讲清楚才算真记住",
+    advCheckClear: "验收：问“心里有数吗”——TA 自己觉得记住了就算过，别硬逼 TA 做背诵表演",
+    advAlone: "陪法：安静陪着就好——TA 背的时候别在旁边反复提醒，让 TA 自己出声复述",
+    advGang: "陪法：把背记变成问答——家长提问 TA 回答，一问一答记得更牢",
+    methods: [
+      "别让 TA 光“看”，要“说”——记完合上书复述一遍，比默读三遍牢",
+      "把要记的东西编成“自问自答”，家长提问、TA 回答"
+    ],
+    week: "每天睡前让 TA 给你“讲课” 3 分钟，讲今天背的最难的 3 个词/概念",
+    quick: "记背：别光看要开口复述，睡前讲 3 分钟最牢"
+  },
+  think: {
+    name: "数学/思考题",
+    option: "做数学题、编程、逻辑推理",
+    sceneStart: "TA 学数学时典型是“先动笔再说”：题目没读完就上手算，算错了才回头看条件。这不是粗心，是 TA 用“动手”来理解世界，拦着不让动反而卡住 TA 的脑回路。",
+    scenePlan: "TA 学数学时典型是“先想后写”：拿到题先看条件、列思路，想清楚了才动笔。别催 TA“快写”，催反而打断 TA 的规划。",
+    advRhythmStart: "节奏：让 TA 先写后看——拿到题先自己写 5 分钟，再一起对条件，别一上来就讲",
+    advRhythmPlan: "节奏：给 TA 充足的“想”的时间，先口头讲思路，讲通了再动笔",
+    advCheckWork: "验收：别只看答案对错，问“你是怎么想到这一步的”，讲得出链路才算真懂",
+    advCheckClear: "验收：别用限时考 TA，TA 的价值在“想得全”，不在“写得快”",
+    advAlone: "陪法：让 TA 自己安静地试错——做完再一起复盘，别在旁边一步一指导",
+    advGang: "陪法：把讨论拉进来——让 TA 把思路讲给你听，讲到卡住的地方一起补",
+    methods: [
+      "做对一题不算会——换数字、换包装、换问法再出一题，TA 能答才算真懂",
+      "让 TA 把思路讲出来：“你是怎么想到这一步的？” 讲得出来才是链没断",
+      "把一道题拆成小台阶，TA 卡在哪一级就补哪一级"
+    ],
+    week: "挑一道 TA 做对的题，家长把数字全改掉，看 TA 能不能再做对",
+    quick: "思考题：变式题三连——改数字、改包装、改问法再考一遍"
+  },
+  language: {
+    name: "英语/表达",
+    option: "学英语、演讲、写作、表达",
+    sceneStart: "TA 学英语时典型是“先开口再说”：发音不准也敢讲，错了被纠正也不怵。这是 TA 用“说”来熟悉语言，先输出再修正，比默背单词更对 TA 胃口。",
+    scenePlan: "TA 学英语时典型是“先想后说”：先在脑子里组织好句子才开口，说出来之前要过一遍。别催 TA 快说，TA 要先想清楚才愿意讲。",
+    advRhythmStart: "节奏：让 TA 先说后纠——每天开口说 5 分钟，说错了先肯定再纠一个音，别打断",
+    advRhythmPlan: "节奏：给 TA 组织句子的时间——先让 TA 想好再说，想的时候别催",
+    advCheckWork: "验收：别只查背了多少词，看 TA 能不能“听完复述一遍”，能转述才是自己的",
+    advCheckClear: "验收：问 TA 听懂没有——TA 心里明白了就行，不一定要当众表演",
+    advAlone: "陪法：让 TA 自己跟读模仿——给一段音频让 TA 独自练，练熟了再展示",
+    advGang: "陪法：陪 TA 对话——家长当听众，一来一回练表达，说错了给正面示范",
+    methods: [
+      "听说读写分开练：能听懂≠能说，主动输出才是自己的",
+      "输出走三台阶：跟读 → 复述 → 即兴（先模仿、再转述、最后自由说）",
+      "材料难度压到“能懂七成”，太难听不懂、太简单没长进"
+    ],
+    week: "选一段 TA 能懂七成的英文/表达素材，练“听完复述一遍”",
+    quick: "语言：三台阶——跟读、复述、即兴，材料压到能懂七成"
+  },
+  sport: {
+    name: "技能/运动",
+    option: "练琴、画画、体育、手工",
+    sceneStart: "TA 练琴、画画这类技能时典型是“先上手再说”：还没看清示范就动手，做错了再回来调。这是 TA 用“身体”来学，光讲理论 TA 记不住，上手才有感觉。",
+    scenePlan: "TA 练琴、画画这类技能时典型是“先看示范再练”：要先把动作和步骤看明白才肯上手。别催 TA 快点练，TA 要先心里有数才做得稳。",
+    advRhythmStart: "节奏：让 TA 先练后调——先让 TA 自己练一遍，再一起抠问题，别一上来就纠正",
+    advRhythmPlan: "节奏：先给 TA 完整示范——把动作拆成步骤讲清楚，TA 想明白了再练",
+    advCheckWork: "验收：看作品也看过程——让 TA 录一段练习，回放对照标准自己找问题",
+    advCheckClear: "验收：问 TA 自己觉得顺不顺——TA 手感对了就行，不一定要马上出作品",
+    advAlone: "陪法：给 TA 安静的练习时间——别在旁边频繁纠正，让 TA 自己体会手感",
+    advGang: "陪法：一起练——家长当同学一起做，TA 有人陪更有劲",
+    methods: [
+      "练得多 ≠ 练对了——先解决“做错了自己知不知道”，再谈练",
+      "一次只改一个地方：这周只盯手型/姿势，别同时纠正十个毛病"
+    ],
+    week: "录 30 秒 TA 练习视频，回放让 TA 自己找 1 个问题",
+    quick: "技能：一次只改一个点，录 30 秒回放让 TA 自己找问题"
+  }
+};
+
+/* ===== 数据：通用建议（v1.0 兜底，未选学科时用） ===== */
+var ADVICE = {
+  start:  { t: "陪玩策略 · 少讲，多陪做", d: "和 TA 一起动手试错，让 TA 自己撞出答案，学到的东西会牢得多。" },
+  plan:   { t: "陪玩策略 · 先给全景图", d: "动手前先讲清楚整体安排和步骤，TA 会更安心，学起来更稳。" },
+  alone:  { t: "环境支持 · 给 TA 一块安静领地", d: "别频繁打断，也别在旁边“指导”，安静守着就好。" },
+  gang:   { t: "环境支持 · 给 TA 组队机会", d: "找小伙伴或陪 TA 一起学，有人陪着 TA 才有劲、学得进。" },
+  work:   { t: "验收方式 · 让 TA 做出成品", d: "问“你学会了什么”不如说“做个东西给我看”。" },
+  clear:  { t: "验收方式 · 问 TA 弄懂了吗", d: "TA 弄明白就真学会了，别硬要 TA 交作品，那会打击 TA。" }
+};
+
+/* ===== 全局状态 ===== */
+var answers = [];
+var selectedSubjects = [];  // 前置选科，按勾选顺序存 ["memory","think",...]，最多 3
+
+/* ===== 前置选科屏 ===== */
+function showSubjects() {
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("subjects").classList.remove("hidden");
+  updateSubjectTip();
+}
+function toggleSubject(el) {
+  var key = el.getAttribute("data-sub");
+  var idx = selectedSubjects.indexOf(key);
+  if (idx !== -1) {
+    selectedSubjects.splice(idx, 1);
+    el.classList.remove("selected");
+  } else {
+    if (selectedSubjects.length >= 3) { alert("最多选 3 项哦，先按孩子最常学的来。"); return; }
+    selectedSubjects.push(key);
+    el.classList.add("selected");
+  }
+  updateSubjectTip();
+}
+function updateSubjectTip() {
+  document.getElementById("sTip").textContent = "已选 " + selectedSubjects.length + " / 3 项" + (selectedSubjects.length === 0 ? "（不选也能继续）" : "");
+}
+
+/* ===== 答题 ===== */
+function startQuiz() {
+  document.getElementById("subjects").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  renderQuestion(0);
+}
+function renderQuestion(i) {
+  var q = QUESTIONS[i];
+  document.getElementById("qNow").textContent = i + 1;
+  document.getElementById("qTotal").textContent = QUESTIONS.length;
+  document.getElementById("qBar").style.width = Math.round((i + 1) / QUESTIONS.length * 100) + "%";
+  document.getElementById("qDim").textContent = q.dim;
+  document.getElementById("qText").textContent = q.text;
+  var box = document.getElementById("qOpts");
+  box.innerHTML = "";
+  var opts = [q.a, q.b];
+  var labels = ["A", "B"];
+  for (var k = 0; k < 2; k++) {
+    (function (idx) {
+      var el = document.createElement("div");
+      el.className = "opt";
+      el.innerHTML = '<div class="letter">' + labels[idx] + '</div>' + opts[idx].label;
+      el.onclick = function () {
+        answers[i] = opts[idx].pole;
+        if (i + 1 < QUESTIONS.length) { renderQuestion(i + 1); }
+        else { showResult(); }
+      };
+      box.appendChild(el);
+    })(k);
+  }
+}
+
+/* ===== 判定算法（保持 v1.0 不变：35 题计分 + 16 型查表 + 边缘兜底） ===== */
+function showResult() {
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+  var dims = ["start", "big", "alone", "work"];
+  var revs = { start: "plan", big: "detail", alone: "gang", work: "clear" };
+  var scores = {};
+  var counts = {};
+  for (var i = 0; i < QUESTIONS.length; i++) {
+    var d = QUESTIONS[i].dim;
+    if (!counts[d]) { counts[d] = { start: 0, plan: 0, big: 0, detail: 0, alone: 0, gang: 0, work: 0, clear: 0 }; }
+    counts[d][answers[i]]++;
+  }
+  function pick(dim, p1, p2) {
+    var c1 = counts[dim][p1], c2 = counts[dim][p2];
+    var pct = Math.round(c1 / (c1 + c2) * 100);
+    var win = c1 >= c2 ? p1 : p2;
+    var edge = pct >= 40 && pct <= 60;
+    return { pct: pct, win: win, edge: edge };
+  }
+  var r = {
+    start: pick("起手式", "start", "plan"),
+    big: pick("信息口味", "big", "detail"),
+    alone: pick("学习搭子", "alone", "gang"),
+    work: pick("验收执念", "work", "clear")
+  };
+  var code = (r.start.win === "start" ? "A" : "P") + (r.big.win === "big" ? "F" : "D") + (r.alone.win === "alone" ? "L" : "G") + (r.work.win === "work" ? "W" : "T");
+  renderResult(code, r);
+}
+
+function typeDims(code) {
+  return { start: code[0] === "A", big: code[1] === "F", alone: code[2] === "L", work: code[3] === "W" };
+}
+
+/* ===== 交叉文案：16 型骨架 + 第一学科语境（64 组由维度拼装覆盖） ===== */
+function crossFor(code, subKey) {
+  var s = SUBJECTS[subKey];
+  var dims = typeDims(code);
+  var persona = dims.start ? s.sceneStart : s.scenePlan;
+  var advice = [
+    dims.start ? s.advRhythmStart : s.advRhythmPlan,
+    dims.work ? s.advCheckWork : s.advCheckClear,
+    dims.alone ? s.advAlone : s.advGang
+  ];
+  return { persona: persona, advice: advice };
+}
+
+function renderResult(code, r) {
+  var t = TYPES[code.slice(0, 2) + "_" + code.slice(2)];
+  document.getElementById("rCode").textContent = code;
+  document.getElementById("rName").textContent = t.name;
+  var t1 = r.start.edge ? "待观察" : (r.start.win === "start" ? "先动手派" : "先规划派");
+  var t2 = r.big.edge ? "待观察" : (r.big.win === "big" ? "看大局派" : "抠细节派");
+  var t3 = r.alone.edge ? "待观察" : (r.alone.win === "alone" ? "独行侠" : "搭子狂");
+  var t4 = r.work.edge ? "待观察" : (r.work.win === "work" ? "作品党" : "通透党");
+  document.getElementById("rTraits").textContent = t1 + " · " + t2 + " · " + t3 + " · " + t4;
+
+  /* ① 人格层：交叉 or 通用兜底 */
+  var hasSub = selectedSubjects.length > 0 && !!SUBJECTS[selectedSubjects[0]];
+  var firstSub = hasSub ? selectedSubjects[0] : null;
+  var cross = hasSub ? crossFor(code, firstSub) : null;
+  document.getElementById("rSummary").textContent = hasSub ? cross.persona : t.persona;
+  document.getElementById("rToneLine").textContent = hasSub
+    ? "这份报告已按「" + SUBJECTS[firstSub].name + "」学科语境生成"
+    : "未选科目，以下为 16 型通用版报告";
+
+  /* 四维倾向条 */
+  var axes = document.getElementById("rAxes");
+  axes.innerHTML = "";
+  var rows = [
+    { l: "先动手派 " + r.start.pct + "%", r: "先规划派 " + (100 - r.start.pct) + "%", w: r.start.pct, edge: r.start.edge },
+    { l: "看大局派 " + r.big.pct + "%", r: "抠细节派 " + (100 - r.big.pct) + "%", w: r.big.pct, edge: r.big.edge },
+    { l: "独行侠 " + r.alone.pct + "%", r: "搭子狂 " + (100 - r.alone.pct) + "%", w: r.alone.pct, edge: r.alone.edge },
+    { l: "作品党 " + r.work.pct + "%", r: "通透党 " + (100 - r.work.pct) + "%", w: r.work.pct, edge: r.work.edge }
+  ];
+  for (var i = 0; i < rows.length; i++) {
+    var row = document.createElement("div");
+    row.className = "axis-row";
+    row.innerHTML = '<div class="axis-label"><span class="left">' + rows[i].l + (rows[i].edge ? '<span class="edge-tag">待观察</span>' : '') + '</span><span class="right">' + rows[i].r + '</span></div>' +
+      '<div class="axis-track"><div class="axis-fill' + (rows[i].edge ? ' edge' : '') + '" style="width:' + rows[i].w + '%"></div></div>';
+    axes.appendChild(row);
+  }
+
+  /* 边缘兜底提示（算法不变） */
+  var banner = document.getElementById("rEdgeBanner");
+  var edgeCount = (r.start.edge ? 1 : 0) + (r.big.edge ? 1 : 0) + (r.alone.edge ? 1 : 0) + (r.work.edge ? 1 : 0);
+  if (edgeCount > 0) {
+    banner.textContent = "检测到 " + edgeCount + " 个维度还不够明显：建议日常多观察孩子的表现后再测一次，结果会更准。边缘维度已用橙色标注。";
+    banner.classList.remove("hidden");
+  } else {
+    banner.classList.add("hidden");
+  }
+
+  /* 3 条行动建议 */
+  var adv = document.getElementById("rAdvice");
+  adv.innerHTML = "";
+  if (hasSub) {
+    // 交叉：3 条固定按 16 型骨架落成学科动作
+    var titles = ["节奏", "验收", "陪法"];
+    for (var ci = 0; ci < cross.advice.length; ci++) {
+      var cItem = document.createElement("div");
+      cItem.className = "advice";
+      cItem.innerHTML = '<div class="icon">' + (ci + 1) + '</div><div><h4>' + titles[ci] + '</h4><p>' + cross.advice[ci] + '</p></div>';
+      adv.appendChild(cItem);
+    }
+  } else {
+    // 通用兜底：非边缘维度的胜出极建议
+    var pickData = [
+      { d: r.start, k: "start" },
+      { d: r.alone, k: "alone" },
+      { d: r.work, k: "work" }
+    ];
+    var picks = [];
+    for (var pd = 0; pd < pickData.length; pd++) {
+      if (!pickData[pd].d.edge) { picks.push(pickData[pd].d.win); }
+    }
+    for (var j = 0; j < picks.length; j++) {
+      var a = ADVICE[picks[j]];
+      var item = document.createElement("div");
+      item.className = "advice";
+      item.innerHTML = '<div class="icon">' + (j + 1) + '</div><div><h4>' + a.t + '</h4><p>' + a.d + '</p></div>';
+      adv.appendChild(item);
+    }
+  }
+
+  /* ② 方法层：按第一学科给方法卡 + 本周小动作 + 另科速览 */
+  var methodBox = document.getElementById("rMethod");
+  if (hasSub) {
+    var s0 = SUBJECTS[firstSub];
+    methodBox.classList.remove("hidden");
+    document.getElementById("rMethodTitle").textContent = "TA 最近在学" + s0.option + "，这样陪更顺";
+    var ml = document.getElementById("rMethodList");
+    ml.innerHTML = "";
+    for (var mi = 0; mi < s0.methods.length; mi++) {
+      var mItem = document.createElement("div");
+      mItem.className = "method-item";
+      mItem.innerHTML = '<div class="m-dot">' + (mi + 1) + '</div><p>' + s0.methods[mi] + '</p>';
+      ml.appendChild(mItem);
+    }
+    document.getElementById("rWeek").textContent = s0.week;
+    // 另两科速览
+    var extra = selectedSubjects.slice(1);
+    if (extra.length > 0) {
+      var ql = document.getElementById("rQuick");
+      ql.classList.remove("hidden");
+      var qlList = document.getElementById("rQuickList");
+      qlList.innerHTML = "";
+      for (var ei = 0; ei < extra.length; ei++) {
+        var se = SUBJECTS[extra[ei]];
+        var qItem = document.createElement("div");
+        qItem.className = "ql-item";
+        qItem.innerHTML = "<b>" + se.name + "：</b>" + se.quick;
+        qlList.appendChild(qItem);
+      }
+    } else {
+      document.getElementById("rQuick").classList.add("hidden");
+    }
+  } else {
+    methodBox.classList.add("hidden");
+  }
+
+  /* ③ 档案钩子：保存 / 复测（localStorage 模拟） */
+  var saveBtn = document.getElementById("rSaveBtn");
+  saveBtn.textContent = "保存档案";
+  saveBtn.onclick = function () { saveArchive(code, firstSub); };
+}
+
+/* ===== 档案钩子：保存档案 / 复测 ===== */
+function saveArchive(code, subKey) {
+  var rec = {
+    code: code,
+    subject: subKey,
+    savedAt: new Date().toISOString()
+  };
+  var list = [];
+  try { list = JSON.parse(localStorage.getItem("learnMBTI_archives") || "[]"); } catch (e) { list = []; }
+  list.push(rec);
+  localStorage.setItem("learnMBTI_archives", JSON.stringify(list));
+  var btn = document.getElementById("rSaveBtn");
+  btn.textContent = "已保存 ✓";
+  btn.style.background = "#10b981";
+  alert("已存入本机档案（localStorage）。可随时回来复测对比。");
+}
+function retest() {
+  if (confirm("重新测试将清空本次作答，确定开始吗？")) {
+    answers = [];
+    selectedSubjects = [];
+    location.reload();
+  }
+}
+
+/* ===== showcase 模式：整页静态展示（?showcase=1） ===== */
+if (location.search.indexOf("showcase") !== -1) {
+  document.body.classList.add("showcase");
+  document.getElementById("subjects").classList.remove("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  document.getElementById("result").classList.remove("hidden");
+  selectedSubjects = ["think"];
+  var sample = {
+    start: { pct: 72, win: "start", edge: false },
+    big:   { pct: 65, win: "big", edge: false },
+    alone: { pct: 55, win: "alone", edge: true },
+    work:  { pct: 80, win: "work", edge: false }
+  };
+  renderResult("AFLW", sample);
+}
+
+/* ===== 移动端渲染诊断（#diag 或 ?diag=1，仅供无头验证，不影响正常使用） ===== */
+if (location.search.indexOf("diag") !== -1 || location.hash.indexOf("diag") !== -1) {
+  // 同时展开全部 4 屏（首页/选科/答题/结果），便于整页滚动截图验证
+  document.getElementById("home").classList.remove("hidden");
+  document.getElementById("subjects").classList.remove("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  document.getElementById("result").classList.remove("hidden");
+  selectedSubjects = ["think", "memory"];
+  var diagCards = document.querySelectorAll(".subject-card");
+  for (var dc = 0; dc < diagCards.length; dc++) {
+    if (diagCards[dc].getAttribute("data-sub") === "think" || diagCards[dc].getAttribute("data-sub") === "memory") {
+      diagCards[dc].classList.add("selected");
+    }
+  }
+  renderQuestion(0);
+  var diagSample = {
+    start: { pct: 72, win: "start", edge: false },
+    big:   { pct: 65, win: "big", edge: false },
+    alone: { pct: 55, win: "alone", edge: true },
+    work:  { pct: 80, win: "work", edge: false }
+  };
+  renderResult("AFLW", diagSample);
+  setTimeout(function () {
+    var vw = window.innerWidth;
+    var docSW = document.documentElement.scrollWidth;
+    var bodySW = document.body.scrollWidth;
+    var overflowEls = [];
+    var els = document.querySelectorAll(".screen, .btn, .opt, .subject-card, .advice, .method-block, .edge-banner, .archive-block, .quick-look, .week-card, .badge");
+    for (var x = 0; x < els.length; x++) {
+      var rc = els[x].getBoundingClientRect();
+      if (rc.right > vw + 1 || rc.left < -1) {
+        overflowEls.push(els[x].className + "@" + Math.round(rc.left) + "," + Math.round(rc.right));
+      }
+    }
+    var hotShort = [];
+    var hotEls = document.querySelectorAll(".btn, .opt, .subject-card");
+    for (var y = 0; y < hotEls.length; y++) {
+      var h = hotEls[y].getBoundingClientRect().height;
+      if (h < 44) { hotShort.push(hotEls[y].className + "=" + Math.round(h)); }
+    }
+    var diag = "DIAG vw=" + vw + " docSW=" + docSW + " bodySW=" + bodySW +
+      " | overflowCount=" + overflowEls.length + " | hotLT44=" + hotShort.length +
+      " | " + overflowEls.join(";") + " | " + hotShort.join(";");
+    document.title = diag;
+    document.body.setAttribute("data-diag", diag);
+    var box = document.createElement("div");
+    box.id = "diagBox";
+    box.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:99999;background:#ffffff;border-bottom:3px solid #e11d48;color:#be123c;font:12px/1.5 Consolas,monospace;padding:5px 8px;white-space:pre-wrap;word-break:break-all;";
+    box.textContent = diag + "\n" + overflowEls.join(";") + (hotShort.length ? "\nhotLT44: " + hotShort.join(";") : "");
+    document.body.appendChild(box);
+  }, 300);
+}
+</script>
+</body>
+</html>

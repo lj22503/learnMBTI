@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>learnMBTI · 孩子学习人格测试</title>
+<title>learnMBTI · 学习人格测试</title>
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="learnMBTI">
-<meta property="og:title" content="learnMBTI · 孩子学习人格测试">
+<meta property="og:title" content="learnMBTI · 学习人格测试">
 <meta property="og:description" content="16 型学习人格 × 8 大学科交叉报告，附选科建议与 7 天陪学方案打卡闭环。">
 <meta property="og:url" content="https://lj22503.github.io/learnMBTI/">
 <meta property="og:image" content="https://lj22503.github.io/learnMBTI/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="learnMBTI · 孩子学习人格测试">
+<meta name="twitter:title" content="learnMBTI · 学习人格测试">
 <meta name="twitter:description" content="16 型学习人格 × 8 大学科交叉报告，附选科建议与 7 天陪学方案打卡闭环。">
 <meta name="twitter:image" content="https://lj22503.github.io/learnMBTI/og-image.png">
 <style>
@@ -40,7 +40,7 @@
   }
   .btn.ghost:hover { border-color: #c7cbd4; transform: none; box-shadow: none; }
   .btn.small { font-size: 17px; padding: 13px 32px; letter-spacing: 1px; }
-  .btn-row { display: flex; justify-content: center; gap: 18px; margin-top: 40px; flex-wrap: wrap; }
+  .btn-row { display: flex; justify-content: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
   .footer-note { margin-top: 30px; text-align: center; font-size: 14px; color: #b0b8c4; }
   /* 分享卡与解锁区（v1.4） */
   .share-foot { margin-top: 22px; text-align: center; font-size: 14px; color: #b0b8c4; }
@@ -52,6 +52,11 @@
   .sc-line { margin-top: 12px; font-size: 16px; color: #4f46e5; line-height: 1.7; }
   .sc-qr { width: 168px; height: 168px; margin: 24px auto 0; display: block; }
   .sc-qr-tip { margin-top: 10px; font-size: 13px; color: #9ca3af; }
+  .sc-axes-title { margin-top: 18px; font-size: 15px; font-weight: 700; color: #111827; text-align: center; }
+  .sc-axes { margin-top: 14px; gap: 12px; }
+  .sc-axes .axis-label { font-size: 13.5px; margin-bottom: 5px; }
+  .sc-save-img { width: 100%; max-width: 420px; margin: 14px auto 0; display: block; border-radius: 16px; box-shadow: 0 16px 40px rgba(79,70,229,.12); }
+  .sc-img-btn { display: inline-block; margin-top: 2px; }
   .sc-hint { margin-top: 18px; text-align: center; font-size: 15px; color: #6b7280; }
   .tc-congrats { margin: 0 0 18px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7; }
 
@@ -60,29 +65,33 @@
   .home h1 { margin-top: 40px; font-size: 52px; font-weight: 900; line-height: 1.4; color: #111827; }
   .home h1 .accent { color: #4f46e5; }
   .home .desc { margin-top: 26px; font-size: 21px; color: #6b7280; line-height: 1.9; max-width: 560px; }
+  .home .desc + .desc { margin-top: 12px; }
   .home .desc b { color: #374151; }
   .home .btn-wrap { margin-top: 52px; }
   .home .meta { margin-top: 28px; font-size: 15px; color: #9ca3af; letter-spacing: 1px; }
 
   /* 前置选科屏 */
-  .subjects { min-height: 1120px; display: flex; flex-direction: column; }
+  .subjects { min-height: 100vh; min-height: 100dvh; padding: 18px 20px 14px; display: flex; flex-direction: column; }
+  .subjects .quiz-top .brand { font-size: 20px; }
+  .subjects .quiz-top .brand .dot { width: 16px; height: 16px; }
+  .subjects .quiz-top .counter { font-size: 15px; }
+  .subjects .btn { padding: 12px 26px; font-size: 16px; min-height: 42px; }
   .subjects .s-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-  .s-kicker { text-align: center; font-size: 15px; color: #9ca3af; letter-spacing: 3px; }
-  .s-title { margin-top: 18px; text-align: center; font-size: 34px; font-weight: 800; line-height: 1.5; color: #111827; }
-  .s-sub { margin-top: 12px; text-align: center; font-size: 16px; color: #6b7280; }
-  .subject-grid { margin-top: 46px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .s-title { margin-top: 10px; text-align: center; font-size: 26px; font-weight: 800; line-height: 1.35; color: #111827; }
+  .s-sub { margin-top: 8px; text-align: center; font-size: 14px; color: #6b7280; line-height: 1.6; }
+  .subject-grid { margin-top: 22px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .subject-card {
-    background: #ffffff; border: 2px solid #e5e7eb; border-radius: 16px;
-    padding: 26px 24px; text-align: center; font-size: 18px; line-height: 1.7; color: #374151;
+    background: #ffffff; border: 2px solid #e5e7eb; border-radius: 12px;
+    padding: 13px 10px; text-align: center; font-size: 15px; line-height: 1.5; color: #374151;
     cursor: pointer; transition: border-color .15s, box-shadow .15s, transform .15s;
   }
-  .subject-card .s-ico { display: inline-block; width: 40px; height: 40px; line-height: 40px; border-radius: 12px; background: #eef0f4; color: #6b7280; font-size: 19px; font-weight: 800; margin-bottom: 12px; }
+  .subject-card .s-ico { display: inline-block; width: 30px; height: 30px; line-height: 30px; border-radius: 9px; background: #eef0f4; color: #6b7280; font-size: 15px; font-weight: 800; margin-bottom: 6px; }
   .subject-card:hover { border-color: #4f46e5; box-shadow: 0 10px 24px rgba(79,70,229,.10); transform: translateY(-2px); }
   .subject-card:hover .s-ico { background: #4f46e5; color: #fff; }
   .subject-card.selected { border-color: #4f46e5; box-shadow: 0 10px 24px rgba(79,70,229,.14); }
   .subject-card.selected .s-ico { background: #4f46e5; color: #fff; }
-  .subject-card .s-tag { display: inline-block; margin-top: 10px; font-size: 12px; color: #4f46e5; background: #eef0ff; border-radius: 999px; padding: 2px 10px; font-weight: 600; }
-  .s-tip { margin-top: 22px; text-align: center; font-size: 14px; color: #b0b8c4; }
+  .subject-card .s-tag { display: inline-block; margin-top: 6px; font-size: 11px; color: #4f46e5; background: #eef0ff; border-radius: 999px; padding: 1px 8px; font-weight: 600; }
+  .s-tip { margin-top: 10px; text-align: center; font-size: 13px; color: #b0b8c4; }
 
   /* 答题页 */
   .quiz { min-height: 1120px; display: flex; flex-direction: column; }
@@ -92,7 +101,6 @@
   .progress-track { margin-top: 18px; height: 6px; background: #eef0f4; border-radius: 999px; }
   .progress-fill { height: 100%; width: 12%; background: #4f46e5; border-radius: 999px; transition: width .4s; }
   .quiz-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
-  .q-dim { text-align: center; font-size: 15px; color: #9ca3af; letter-spacing: 3px; }
   .q-text { margin-top: 22px; text-align: center; font-size: 34px; font-weight: 800; line-height: 1.6; color: #111827; }
   .opts { margin-top: 56px; display: flex; gap: 20px; }
   .opt {
@@ -117,17 +125,18 @@
   }
   .badge .code { font-size: 30px; font-weight: 900; letter-spacing: 3px; }
   .badge .small { font-size: 12px; opacity: .8; margin-top: 4px; }
-  .result-head h2 { margin-top: 28px; font-size: 44px; font-weight: 900; color: #111827; }
+  .result-head h2 { margin-top: 12px; font-size: 44px; font-weight: 900; color: #111827; }
   .result-head .traits { margin-top: 10px; font-size: 17px; color: #6b7280; letter-spacing: 2px; }
   .result-head .summary { margin-top: 24px; font-size: 21px; color: #4b5563; line-height: 1.9; max-width: 600px; margin-left: auto; margin-right: auto; }
   .result-head .tone-line { margin-top: 12px; font-size: 14px; color: #9ca3af; }
 
   .axes { margin-top: 48px; display: flex; flex-direction: column; gap: 26px; }
   .axis-label { display: flex; justify-content: space-between; font-size: 16px; color: #6b7280; margin-bottom: 8px; font-weight: 600; }
-  .axis-label .left { color: #4f46e5; }
+  .axis-label .win { color: #4f46e5; font-weight: 700; }
   .axis-track { height: 10px; background: #eef0f4; border-radius: 999px; position: relative; overflow: hidden; }
   .axis-fill { position: absolute; left: 0; top: 0; height: 100%; border-radius: 999px; background: #4f46e5; }
   .axis-fill.edge { background: #f59e0b; }
+  .axis-fill.from-right { left: auto; right: 0; }
   .edge-tag { display: inline-block; margin-left: 8px; font-size: 12px; color: #b45309; background: #fef3c7; border-radius: 999px; padding: 2px 8px; font-weight: 600; white-space: nowrap; }
   .edge-banner { margin-top: 28px; background: #fffbeb; border: 1px solid #fde68a; color: #92400e; border-radius: 12px; padding: 14px 18px; font-size: 15px; line-height: 1.7; text-align: center; word-break: break-word; }
 
@@ -140,6 +149,7 @@
 
   /* 方法层 */
   .method-block { margin-top: 48px; background: #fafbff; border: 1px solid #e6e8f5; border-radius: 16px; padding: 26px 28px; }
+  .sub-block + .sub-block { margin-top: 26px; }
   .method-kicker { font-size: 14px; color: #7c3aed; font-weight: 700; letter-spacing: 2px; }
   .method-title { margin-top: 8px; font-size: 22px; font-weight: 800; color: #111827; }
   .method-list { margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
@@ -286,7 +296,6 @@
     .quiz-top .counter { font-size: 15px; }
     .quiz-top .counter b { font-size: 19px; }
     .progress-track { margin-top: 14px; }
-    .q-dim { font-size: 13px; letter-spacing: 2px; }
     .q-text { margin-top: 18px; font-size: 24px; line-height: 1.55; }
     .opts { flex-direction: column; gap: 14px; margin-top: 30px; }
     .opt { width: 100%; min-height: 96px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px 16px; font-size: 16.5px; }
@@ -298,7 +307,7 @@
     .badge { width: 104px; height: 104px; border-radius: 18px; margin-top: 8px; }
     .badge .code { font-size: 22px; letter-spacing: 2px; }
     .badge .small { font-size: 11px; }
-    .result-head h2 { margin-top: 20px; font-size: 27px; }
+    .result-head h2 { margin-top: 8px; font-size: 27px; }
     .result-head .traits { font-size: 13.5px; letter-spacing: 1px; }
     .result-head .summary { margin-top: 18px; font-size: 15.5px; line-height: 1.85; max-width: 100%; }
     .result-head .tone-line { font-size: 13px; }
@@ -356,10 +365,12 @@
 <!-- 屏1 首页 -->
 <section id="home" class="screen home">
   <div class="brand"><span class="dot"></span>learnMBTI</div>
-  <h1>孩子的学习人格测试</h1>
-  <p class="desc">每个孩子都有自己的学习方式——<b>有人先动手，有人先规划</b>；有人爱独闯，有人爱结伴。<br>16 种学习人格 × 正在学的科目，帮你读懂孩子天赋背后的密码。</p>
+  <h1>学习人格测试</h1>
+  <p class="desc">每个孩子都有自己的学习方式——</p>
+  <p class="desc"><b>有人先动手，有人先规划</b>；有人爱独闯，有人爱结伴。</p>
+  <p class="desc">16 种学习人格 × 正在学的科目，帮你读懂孩子天赋背后的密码。</p>
   <div class="btn-wrap"><a class="btn" onclick="showSubjects()">开始测试</a></div>
-  <div class="meta">约 5 分钟 · 35 道情境题 · 家长视角作答 · 结果仅供陪伴参考</div>
+  <div class="meta">约 5 分钟 · 35 道情境题 · 结果仅供陪伴参考</div>
 </section>
 
 <!-- 屏1.5 前置选科 -->
@@ -369,7 +380,6 @@
     <div class="counter" style="color:#9ca3af">先选科目</div>
   </div>
   <div class="s-body">
-    <div class="s-kicker">STEP 0 · 选科</div>
     <div class="s-title">孩子最近主要在学什么？</div>
     <div class="s-sub">多选，最多 3 项；不选也能继续，会给出通用版报告</div>
     <div class="subject-grid">
@@ -406,7 +416,6 @@
   </div>
   <div class="progress-track"><div class="progress-fill" id="qBar"></div></div>
   <div class="quiz-body">
-    <div class="q-dim" id="qDim"></div>
     <div class="q-text" id="qText"></div>
     <div class="opts" id="qOpts"></div>
   </div>
@@ -417,11 +426,9 @@
 <section id="result" class="screen result hidden">
   <div class="quiz-top">
     <div class="brand"><span class="dot"></span>learnMBTI</div>
-    <div class="counter" style="color:#9ca3af">结果报告</div>
   </div>
   <div class="result-head">
     <img class="badge-img hidden" id="rPortrait" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="学习人格形象">
-    <div class="badge"><div class="code" id="rCode"></div><div class="small">学习人格</div></div>
     <h2 id="rName"></h2>
     <div class="traits" id="rTraits"></div>
     <p class="summary" id="rSummary"></p>
@@ -435,16 +442,6 @@
   <!-- 方法层（②） -->
   <div class="method-block hidden" id="rMethod">
     <div class="method-kicker">方法层 · 学科专属</div>
-    <div class="method-title" id="rMethodTitle"></div>
-    <div class="method-list" id="rMethodList"></div>
-    <div class="week-card">
-      <div class="w-tag">本周就能试</div>
-      <p id="rWeek"></p>
-    </div>
-    <div class="quick-look hidden" id="rQuick">
-      <div class="ql-title">另选科目速览</div>
-      <div id="rQuickList"></div>
-    </div>
   </div>
 
   <!-- 解锁区：单一动作 = 生成分享卡，分享后解锁 7 天陪学方案包（家长视角：奖励，不是任务） -->
@@ -463,22 +460,26 @@
 <section id="sharecard" class="screen sharecard hidden">
   <div class="quiz-top">
     <div class="brand"><span class="dot"></span>learnMBTI</div>
-    <div class="counter" style="color:#9ca3af">分享卡</div>
   </div>
   <div class="sc-card">
     <div class="sc-head">
       <img class="sc-img" id="scPortrait" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="学习人格形象">
-      <div class="badge"><div class="code" id="scCode"></div><div class="small">学习人格</div></div>
       <div class="sc-name" id="scName"></div>
       <div class="traits" id="scTraits"></div>
       <p class="sc-line" id="scLine"></p>
+      <div class="sc-axes-title">四维倾向</div>
+      <div class="axes sc-axes" id="scAxes"></div>
     </div>
     <img class="sc-qr" src="qr-learnmbti.png" alt="learnMBTI 二维码">
     <div class="sc-qr-tip">扫一扫，给孩子也测一份</div>
   </div>
-  <div class="sc-hint">长按卡片保存图片，把这份学习方案带回家</div>
+  <div id="scImgBox"></div>
+  <div class="sc-hint">点下方按钮生成图片，长按图片即可保存</div>
   <div class="btn-row">
     <a class="btn" onclick="unlockPlan()">我分享好了，解锁 7 天方案包</a>
+  </div>
+  <div class="btn-row">
+    <a class="ghost-link sc-img-btn" id="scImgBtn" onclick="saveShareImg()">生成分享图片 · 长按保存</a>
   </div>
   <div class="footer-note">learnMBTI · 分享即解锁，给孩子一份专属陪学方案</div>
 </section>
@@ -910,7 +911,6 @@ function renderQuestion(i) {
   document.getElementById("qNow").textContent = i + 1;
   document.getElementById("qTotal").textContent = QUESTIONS.length;
   document.getElementById("qBar").style.width = Math.round((i + 1) / QUESTIONS.length * 100) + "%";
-  document.getElementById("qDim").textContent = q.dim;
   document.getElementById("qText").textContent = q.text;
   var box = document.getElementById("qOpts");
   box.innerHTML = "";
@@ -984,7 +984,7 @@ function renderResult(code, r) {
   var rp = document.getElementById("rPortrait");
   rp.src = "assets/portraits/type-" + code + ".png";
   rp.classList.remove("hidden");
-  document.getElementById("rCode").textContent = code;
+
   document.getElementById("rName").textContent = t.name;
   var t1 = r.start.edge ? "待观察" : (r.start.win === "start" ? "先动手派" : "先规划派");
   var t2 = r.big.edge ? "待观察" : (r.big.win === "big" ? "看大局派" : "抠细节派");
@@ -1013,8 +1013,10 @@ function renderResult(code, r) {
   for (var i = 0; i < rows.length; i++) {
     var row = document.createElement("div");
     row.className = "axis-row";
-    row.innerHTML = '<div class="axis-label"><span class="left">' + rows[i].l + (rows[i].edge ? '<span class="edge-tag">待观察</span>' : '') + '</span><span class="right">' + rows[i].r + '</span></div>' +
-      '<div class="axis-track"><div class="axis-fill' + (rows[i].edge ? ' edge' : '') + '" style="width:' + rows[i].w + '%"></div></div>';
+    var winLeft = rows[i].w >= 50;
+    var fillW = winLeft ? rows[i].w : (100 - rows[i].w);
+    row.innerHTML = '<div class="axis-label"><span class="left' + (rows[i].edge ? '' : (winLeft ? ' win' : '')) + '">' + rows[i].l + (rows[i].edge ? '<span class="edge-tag">待观察</span>' : '') + '</span><span class="right' + (rows[i].edge ? '' : (!winLeft ? ' win' : '')) + '">' + rows[i].r + '</span></div>' +
+      '<div class="axis-track"><div class="axis-fill' + (rows[i].edge ? ' edge' : '') + (winLeft ? '' : ' from-right') + '" style="width:' + fillW + '%"></div></div>';
     axes.appendChild(row);
   }
 
@@ -1037,7 +1039,7 @@ function renderResult(code, r) {
     for (var ci = 0; ci < cross.advice.length; ci++) {
       var cItem = document.createElement("div");
       cItem.className = "advice";
-      cItem.innerHTML = '<div class="icon">' + (ci + 1) + '</div><div><h4>' + titles[ci] + '</h4><p>' + cross.advice[ci] + '</p></div>';
+      cItem.innerHTML = '<div class="icon">' + (ci + 1) + '</div><div><h4>' + titles[ci] + '</h4><p>' + cross.advice[ci].replace(/^(节奏|验收|陪法)：/, '') + '</p></div>';
       adv.appendChild(cItem);
     }
   } else {
@@ -1060,37 +1062,28 @@ function renderResult(code, r) {
     }
   }
 
-  /* ② 方法层：按第一学科给方法卡 + 本周小动作 + 另科速览 */
+  /* ② 方法层：选了几科就给几科的方法卡 + 本周小动作 */
   var methodBox = document.getElementById("rMethod");
   if (hasSub) {
-    var s0 = SUBJECTS[firstSub];
     methodBox.classList.remove("hidden");
-    document.getElementById("rMethodTitle").textContent = "TA 最近在学" + s0.option + "，这样陪更顺";
-    var ml = document.getElementById("rMethodList");
-    ml.innerHTML = "";
-    for (var mi = 0; mi < s0.methods.length; mi++) {
-      var mItem = document.createElement("div");
-      mItem.className = "method-item";
-      mItem.innerHTML = '<div class="m-dot">' + (mi + 1) + '</div><p>' + s0.methods[mi] + '</p>';
-      ml.appendChild(mItem);
-    }
-    document.getElementById("rWeek").textContent = s0.week;
-    // 另两科速览
-    var extra = selectedSubjects.slice(1);
-    if (extra.length > 0) {
-      var ql = document.getElementById("rQuick");
-      ql.classList.remove("hidden");
-      var qlList = document.getElementById("rQuickList");
-      qlList.innerHTML = "";
-      for (var ei = 0; ei < extra.length; ei++) {
-        var se = SUBJECTS[extra[ei]];
-        var qItem = document.createElement("div");
-        qItem.className = "ql-item";
-        qItem.innerHTML = "<b>" + se.name + "：</b>" + se.quick;
-        qlList.appendChild(qItem);
+    methodBox.innerHTML = '<div class="method-kicker">方法层 · 学科专属</div>';
+    for (var si = 0; si < selectedSubjects.length; si++) {
+      var sk = selectedSubjects[si];
+      if (!SUBJECTS[sk]) { continue; }
+      var s0 = SUBJECTS[sk];
+      var subBlock = document.createElement("div");
+      subBlock.className = "sub-block";
+      subBlock.innerHTML = '<div class="method-title">TA 最近在学' + s0.option + '，这样陪更顺</div>' +
+        '<div class="method-list"></div>' +
+        '<div class="week-card"><div class="w-tag">本周就能试</div><p>' + s0.week + '</p></div>';
+      var ml = subBlock.querySelector(".method-list");
+      for (var mi = 0; mi < s0.methods.length; mi++) {
+        var mItem = document.createElement("div");
+        mItem.className = "method-item";
+        mItem.innerHTML = '<div class="m-dot">' + (mi + 1) + '</div><p>' + s0.methods[mi] + '</p>';
+        ml.appendChild(mItem);
       }
-    } else {
-      document.getElementById("rQuick").classList.add("hidden");
+      methodBox.appendChild(subBlock);
     }
   } else {
     methodBox.classList.add("hidden");
@@ -1423,18 +1416,73 @@ if (location.search.indexOf("diag") !== -1 || location.hash.indexOf("diag") !== 
 
 /* ===== 分享卡（v1.4）：单一动作 = 生成分享卡 → 分享后解锁 7 天陪学方案包 ===== */
 function openShareCard() {
-  var code = (document.getElementById("rCode").textContent || "").trim();
+  var code = lastResult ? lastResult.code : "";
   if (!code) { alert("请先完成测试，再生成分享卡。"); return; }
   var t = TYPES[code.slice(0, 2) + "_" + code.slice(2)];
   if (!t) { alert("暂未找到对应的学习人格，请重新测试。"); return; }
   document.getElementById("scPortrait").src = "assets/portraits/type-" + code + ".png";
-  document.getElementById("scCode").textContent = code;
   document.getElementById("scName").textContent = t.name;
   document.getElementById("scTraits").textContent = document.getElementById("rTraits").textContent;
   document.getElementById("scLine").textContent = document.getElementById("rSummary").textContent;
+
+  /* 四维倾向条：复用结果页渲染逻辑 */
+  var scAxes = document.getElementById("scAxes");
+  if (scAxes) {
+    scAxes.innerHTML = "";
+    var r = lastResult.r;
+    if (r) {
+      var rows = [
+        { l: "先动手派 " + r.start.pct + "%", r: "先规划派 " + (100 - r.start.pct) + "%", w: r.start.pct, edge: r.start.edge },
+        { l: "看大局派 " + r.big.pct + "%", r: "抠细节派 " + (100 - r.big.pct) + "%", w: r.big.pct, edge: r.big.edge },
+        { l: "独行侠 " + r.alone.pct + "%", r: "搭子狂 " + (100 - r.alone.pct) + "%", w: r.alone.pct, edge: r.alone.edge },
+        { l: "作品党 " + r.work.pct + "%", r: "通透党 " + (100 - r.work.pct) + "%", w: r.work.pct, edge: r.work.edge }
+      ];
+      for (var i = 0; i < rows.length; i++) {
+        var row = document.createElement("div");
+        row.className = "axis-row";
+        var winLeft = rows[i].w >= 50;
+        var fillW = winLeft ? rows[i].w : (100 - rows[i].w);
+        row.innerHTML = '<div class="axis-label"><span class="left' + (rows[i].edge ? '' : (winLeft ? ' win' : '')) + '">' + rows[i].l + (rows[i].edge ? '<span class="edge-tag">待观察</span>' : '') + '</span><span class="right' + (rows[i].edge ? '' : (!winLeft ? ' win' : '')) + '">' + rows[i].r + '</span></div>' +
+          '<div class="axis-track"><div class="axis-fill' + (rows[i].edge ? ' edge' : '') + (winLeft ? '' : ' from-right') + '" style="width:' + fillW + '%"></div></div>';
+        scAxes.appendChild(row);
+      }
+    }
+  }
+
   document.getElementById("result").classList.add("hidden");
   document.getElementById("sharecard").classList.remove("hidden");
   if (window.LMT) { window.LMT.track("share_card_view", { code: code }); }
+}
+
+/* 生成分享卡整图：html2canvas 渲染整张 sc-card，页面显示图片（移动端长按即可保存，桌面端可下载） */
+function saveShareImg() {
+  var card = document.querySelector(".sc-card");
+  var box = document.getElementById("scImgBox");
+  var btn = document.getElementById("scImgBtn");
+  if (!card || !box) return;
+  if (typeof html2canvas === "undefined") { alert("图片组件未就绪，请稍后重试。"); return; }
+  box.innerHTML = "";
+  if (btn) { btn.textContent = "生成中…"; }
+  html2canvas(card, { backgroundColor: "#ffffff", scale: 2, useCORS: true }).then(function (canvas) {
+    var data = canvas.toDataURL("image/png");
+    var img = document.createElement("img");
+    img.src = data;
+    img.alt = "learnMBTI 分享卡";
+    img.className = "sc-save-img";
+    box.appendChild(img);
+    var a = document.createElement("a");
+    a.href = data;
+    a.download = "learnMBTI-分享卡.png";
+    a.textContent = "下载图片";
+    a.className = "ghost-link";
+    a.style.cssText = "display:block;margin:10px auto;text-align:center;";
+    box.appendChild(a);
+    if (btn) { btn.textContent = "重新生成图片"; }
+    box.scrollIntoView({ behavior: "smooth", block: "start" });
+  }).catch(function () {
+    if (btn) { btn.textContent = "生成分享图片 · 长按保存"; }
+    alert("图片生成失败，请重试。");
+  });
 }
 function unlockPlan() {
   try { localStorage.setItem("learnMBTI_unlocked", "1"); } catch (e) {}

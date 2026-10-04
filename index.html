@@ -40,6 +40,8 @@
   }
   .btn.ghost:hover { border-color: #c7cbd4; transform: none; box-shadow: none; }
   .btn.small { font-size: 17px; padding: 13px 32px; letter-spacing: 1px; }
+  .btn.secondary { background: #eef0ff; color: #4f46e5; box-shadow: 0 8px 24px rgba(79,70,229,.12); }
+  .btn.secondary:hover { box-shadow: 0 12px 28px rgba(79,70,229,.2); }
   .btn-row { display: flex; justify-content: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
   .footer-note { margin-top: 30px; text-align: center; font-size: 14px; color: #b0b8c4; }
   /* 分享卡与解锁区（v1.4） */
@@ -56,6 +58,7 @@
   .sc-axes { margin-top: 14px; gap: 12px; }
   .sc-axes .axis-label { font-size: 13.5px; margin-bottom: 5px; }
   .sc-save-img { width: 100%; max-width: 420px; margin: 14px auto 0; display: block; border-radius: 16px; box-shadow: 0 16px 40px rgba(79,70,229,.12); }
+  .sc-save-tip { margin-top: 10px; text-align: center; font-size: 15px; font-weight: 700; color: #4f46e5; }
   .sc-img-btn { display: inline-block; margin-top: 2px; }
   .sc-hint { margin-top: 18px; text-align: center; font-size: 15px; color: #6b7280; }
   .tc-congrats { margin: 0 0 18px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7; }
@@ -474,12 +477,11 @@
     <div class="sc-qr-tip">扫一扫，给孩子也测一份</div>
   </div>
   <div id="scImgBox"></div>
-  <div class="sc-hint">点下方按钮生成图片，长按图片即可保存</div>
   <div class="btn-row">
-    <a class="btn" onclick="unlockPlan()">我分享好了，解锁 7 天方案包</a>
+    <a class="btn secondary" id="scImgBtn" onclick="saveShareImg()">生成图片</a>
   </div>
   <div class="btn-row">
-    <a class="ghost-link sc-img-btn" id="scImgBtn" onclick="saveShareImg()">生成分享图片 · 长按保存</a>
+    <a class="btn" onclick="unlockPlan()">我分享好了，解锁 7 天方案包</a>
   </div>
   <div class="footer-note">learnMBTI · 分享即解锁，给孩子一份专属陪学方案</div>
 </section>
@@ -1470,6 +1472,10 @@ function saveShareImg() {
     img.alt = "learnMBTI 分享卡";
     img.className = "sc-save-img";
     box.appendChild(img);
+    var tip = document.createElement("div");
+    tip.className = "sc-save-tip";
+    tip.textContent = "长按这张图片，保存到手机相册";
+    box.appendChild(tip);
     var a = document.createElement("a");
     a.href = data;
     a.download = "learnMBTI-分享卡.png";
@@ -1477,10 +1483,10 @@ function saveShareImg() {
     a.className = "ghost-link";
     a.style.cssText = "display:block;margin:10px auto;text-align:center;";
     box.appendChild(a);
-    if (btn) { btn.textContent = "重新生成图片"; }
+    if (btn) { btn.textContent = "重新生成"; }
     box.scrollIntoView({ behavior: "smooth", block: "start" });
   }).catch(function () {
-    if (btn) { btn.textContent = "生成分享图片 · 长按保存"; }
+    if (btn) { btn.textContent = "生成图片"; }
     alert("图片生成失败，请重试。");
   });
 }

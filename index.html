@@ -484,7 +484,6 @@
     <div class="sc-save-panel">
       <div id="scSaveImgWrap"></div>
       <div class="sc-save-tip">长按图片，保存到手机相册</div>
-      <a class="btn small secondary" onclick="closeSaveLayer(event)">完成</a>
     </div>
   </div>
   <div class="btn-row">
@@ -1483,13 +1482,17 @@ function saveShareImg() {
     img.alt = "learnMBTI 分享卡";
     img.className = "sc-save-img";
     wrap.appendChild(img);
-    var a = document.createElement("a");
-    a.href = data;
-    a.download = "learnMBTI-分享卡.png";
-    a.textContent = "下载图片";
-    a.className = "ghost-link";
-    a.style.cssText = "display:block;margin:10px auto;text-align:center;";
-    wrap.appendChild(a);
+    /* 仅桌面端（非触屏）附加下载链接；移动端一律长按图片保存 */
+    var isMobile = /Android|iPhone|iPad|Mobile/i.test(navigator.userAgent) || navigator.maxTouchPoints > 0;
+    if (!isMobile) {
+      var a = document.createElement("a");
+      a.href = data;
+      a.download = "learnMBTI-分享卡.png";
+      a.textContent = "下载图片";
+      a.className = "ghost-link";
+      a.style.cssText = "display:block;margin:10px auto;text-align:center;";
+      wrap.appendChild(a);
+    }
     layer.classList.remove("hidden");
     if (btn) { btn.textContent = "保存图片到相册"; }
   }).catch(function () {

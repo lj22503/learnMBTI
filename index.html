@@ -57,8 +57,12 @@
   .sc-axes-title { margin-top: 18px; font-size: 15px; font-weight: 700; color: #111827; text-align: center; }
   .sc-axes { margin-top: 14px; gap: 12px; }
   .sc-axes .axis-label { font-size: 13.5px; margin-bottom: 5px; }
-  .sc-save-img { width: 100%; max-width: 420px; margin: 14px auto 0; display: block; border-radius: 16px; box-shadow: 0 16px 40px rgba(79,70,229,.12); }
-  .sc-save-tip { margin-top: 10px; text-align: center; font-size: 15px; font-weight: 700; color: #4f46e5; }
+  .sc-save-layer { position: fixed; inset: 0; z-index: 1000; background: rgba(15,23,42,.82); display: flex; align-items: center; justify-content: center; padding: 24px; }
+  .sc-save-layer.hidden { display: none; }
+  .sc-save-panel { background: #ffffff; border-radius: 20px; padding: 20px; max-width: 420px; width: 100%; max-height: 92vh; overflow: auto; text-align: center; }
+  .sc-save-panel .sc-save-img { width: 100%; border-radius: 14px; display: block; }
+  .sc-save-tip { margin-top: 12px; text-align: center; font-size: 15px; font-weight: 700; color: #4f46e5; }
+  .sc-save-panel .btn { margin-top: 14px; }
   .sc-img-btn { display: inline-block; margin-top: 2px; }
   .sc-hint { margin-top: 18px; text-align: center; font-size: 15px; color: #6b7280; }
   .tc-congrats { margin: 0 0 18px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; border-radius: 14px; padding: 14px 18px; font-size: 15px; line-height: 1.7; }
@@ -476,9 +480,15 @@
     <img class="sc-qr" src="qr-learnmbti.png" alt="learnMBTI 二维码">
     <div class="sc-qr-tip">扫一扫，给孩子也测一份</div>
   </div>
-  <div id="scImgBox"></div>
+  <div id="scSaveLayer" class="sc-save-layer hidden" onclick="closeSaveLayer(event)">
+    <div class="sc-save-panel">
+      <div id="scSaveImgWrap"></div>
+      <div class="sc-save-tip">长按图片，保存到手机相册</div>
+      <a class="btn small secondary" onclick="closeSaveLayer(event)">完成</a>
+    </div>
+  </div>
   <div class="btn-row">
-    <a class="btn secondary" id="scImgBtn" onclick="saveShareImg()">生成图片</a>
+    <a class="btn secondary" id="scImgBtn" onclick="saveShareImg()">保存图片到相册</a>
   </div>
   <div class="btn-row">
     <a class="btn" onclick="unlockPlan()">我分享好了，解锁 7 天方案包</a>
@@ -1456,14 +1466,15 @@ function openShareCard() {
   if (window.LMT) { window.LMT.track("share_card_view", { code: code }); }
 }
 
-/* 生成分享卡整图：html2canvas 渲染整张 sc-card，页面显示图片（移动端长按即可保存，桌面端可下载） */
+/* 保存分享卡到相册：html2canvas 渲染整张 sc-card，弹出全屏图片供长按保存（桌面端附下载链接） */
 function saveShareImg() {
   var card = document.querySelector(".sc-card");
-  var box = document.getElementById("scImgBox");
+  var wrap = document.getElementById("scSaveImgWrap");
+  var layer = document.getElementById("scSaveLayer");
   var btn = document.getElementById("scImgBtn");
-  if (!card || !box) return;
+  if (!card || !wrap || !layer) return;
   if (typeof html2canvas === "undefined") { alert("图片组件未就绪，请稍后重试。"); return; }
-  box.innerHTML = "";
+  wrap.innerHTML = "";
   if (btn) { btn.textContent = "生成中…"; }
   html2canvas(card, { backgroundColor: "#ffffff", scale: 2, useCORS: true }).then(function (canvas) {
     var data = canvas.toDataURL("image/png");
@@ -1471,24 +1482,24 @@ function saveShareImg() {
     img.src = data;
     img.alt = "learnMBTI 分享卡";
     img.className = "sc-save-img";
-    box.appendChild(img);
-    var tip = document.createElement("div");
-    tip.className = "sc-save-tip";
-    tip.textContent = "长按这张图片，保存到手机相册";
-    box.appendChild(tip);
+    wrap.appendChild(img);
     var a = document.createElement("a");
     a.href = data;
     a.download = "learnMBTI-分享卡.png";
     a.textContent = "下载图片";
     a.className = "ghost-link";
     a.style.cssText = "display:block;margin:10px auto;text-align:center;";
-    box.appendChild(a);
-    if (btn) { btn.textContent = "重新生成"; }
-    box.scrollIntoView({ behavior: "smooth", block: "start" });
+    wrap.appendChild(a);
+    layer.classList.remove("hidden");
+    if (btn) { btn.textContent = "保存图片到相册"; }
   }).catch(function () {
-    if (btn) { btn.textContent = "生成图片"; }
+    if (btn) { btn.textContent = "保存图片到相册"; }
     alert("图片生成失败，请重试。");
   });
+}
+function closeSaveLayer(ev) {
+  if (ev && ev.target !== document.getElementById("scSaveLayer")) return;
+  document.getElementById("scSaveLayer").classList.add("hidden");
 }
 function unlockPlan() {
   try { localStorage.setItem("learnMBTI_unlocked", "1"); } catch (e) {}

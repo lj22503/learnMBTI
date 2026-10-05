@@ -167,6 +167,12 @@
   .week-card .w-tag { font-size: 13px; font-weight: 700; letter-spacing: 2px; opacity: .85; }
   .week-card p { margin-top: 6px; font-size: 16px; line-height: 1.7; font-weight: 600; }
 
+  /* 方法包（v1.6）：配比大字卡 + 底部口径说明 */
+  .pack-ratio { margin-top: 18px; background: linear-gradient(135deg,#4f46e5,#7c3aed); border-radius: 12px; padding: 18px 20px; color: #fff; text-align: center; }
+  .pack-ratio .pr-big { font-size: 38px; font-weight: 900; letter-spacing: 3px; line-height: 1.2; }
+  .pack-ratio .pr-sub { margin-top: 6px; font-size: 13px; line-height: 1.6; opacity: .9; }
+  .pack-note { margin-top: 12px; font-size: 12.5px; color: #9ca3af; text-align: center; line-height: 1.7; }
+
   /* 另两科速览 */
   .quick-look { margin-top: 18px; background: #f3f4f8; border-radius: 12px; padding: 16px 18px; }
   .quick-look .ql-title { font-size: 14px; font-weight: 700; color: #6b7280; }
@@ -338,6 +344,9 @@
     .method-item p { font-size: 14px; }
     .week-card { padding: 16px 15px; }
     .week-card p { font-size: 15px; }
+    .pack-ratio { padding: 16px 15px; }
+    .pack-ratio .pr-big { font-size: 32px; letter-spacing: 2px; }
+    .pack-note { font-size: 12px; }
     .quick-look { padding: 14px 13px; }
     .quick-look .ql-title { font-size: 13px; }
     .quick-look .ql-item { font-size: 13.5px; }
@@ -532,6 +541,14 @@
     <div class="g"><div class="g-tag">致命坑</div><p id="repPit"></p></div>
     <div class="g"><div class="g-tag">天赋</div><p id="repGift"></p></div>
     <div class="g"><div class="g-tag">适合路径</div><p id="repPath"></p></div>
+  </div>
+
+  <!-- 章节 3.5 方法包（v1.6）：学习观映射表 v0.1 → 按 16 型渲染配方（配比大字卡 + 四项列表，配比口径注释保留） -->
+  <div class="rep-chapter"><span class="en">METHOD PACK</span><span class="cn">方法包 · 学习观配方</span></div>
+  <div class="rep-card">
+    <div class="pack-ratio" id="repPackRatio"></div>
+    <div class="method-list" id="repPackList"></div>
+    <div class="pack-note">配比口径：上料=规则讲解，下料=例子/练习；数字越大，越要靠“下料”撑住，别急着灌理论。</div>
   </div>
 
   <!-- 章节 4 学习能量 -->
@@ -779,6 +796,27 @@ var SUBJECTS = {
     week: "录 30 秒 TA 练习视频，回放让 TA 自己找 1 个问题",
     quick: "技能：一次只改一个点，录 30 秒回放让 TA 自己找问题"
   }
+};
+
+/* ===== 数据：16 型 × 学习观方法包（v1.6，直接消费《learnMBTI × 学习观 映射表 v0.1》） =====
+   五项：优先学习类型 / 上料:下料配比 / 核心转化动作 / 验收方式 / 家长一句话陪法 */
+var METHOD_PACK = {
+  "AF_LW": { type: "运动型 > 联结型", ratio: "1:4", move: "直接上手 → 设短反馈环 → 错后归因修正", check: "独立完成一件“没见过的新任务”", parent: "别先讲理论，让他做完你再点评" },
+  "PF_LW": { type: "联结型 > 判别型", ratio: "1:3", move: "先定一句话靶 → 拆地图 → 小步执行交付", check: "完成自己拆解的小目标并交付", parent: "陪他拆出第一个 10 分钟小目标" },
+  "AD_LW": { type: "判别型 > 运动型", ratio: "1:2", move: "拆件 → 正反例对照 → 精修打磨", check: "能说清新概念“是/不是”的边界", parent: "允许他拆，错了别急着扶" },
+  "PD_LW": { type: "判别型 > 联结型", ratio: "1:2", move: "清单 → 小步试 → 校准 → 交付", check: "对照清单逐项达标", parent: "帮他把“画图期”切成可交付小步" },
+  "AF_LT": { type: "联结型 > 思考型", ratio: "1:3", move: "动手 → 撞墙 → 复盘归因 → 反推原理", check: "不看书把原理讲清楚", parent: "问他“刚才为什么失败了”，让他自己总结" },
+  "PF_LT": { type: "联结型 > 思考型", ratio: "1:4", move: "小步实践 → 对照理论 → 迭代", check: "把原理讲明白，换对象也成立", parent: "多提问少催促，讨论中他会自己想通" },
+  "AD_LT": { type: "判别型 > 思考型", ratio: "1:2", move: "死磕细节 → 每个“为什么”追到底", check: "出边界例考不倒他", parent: "给深度资料，别打断他的追问" },
+  "PD_LT": { type: "思考型 > 判别型", ratio: "1:4", move: "定目标 → 口述推理链 → 产出分享", check: "推理链无断点，独立走通新题", parent: "给推理素材和时间，让他讲给你听" },
+  "AF_GW": { type: "运动型 > 语言型", ratio: "1:3", move: "组队 → 分工 → 冲刺 → 团队交付", check: "带着团队完成一个完整成品", parent: "给他小组和明确目标，他自带节奏" },
+  "AF_GT": { type: "联结型 > 语言型", ratio: "1:3", move: "边做边聊 → 逢人便问 → 整理沉淀", check: "把聊过的东西整理成自己的输出", parent: "陪他头脑风暴，但逼他把想法沉淀下来" },
+  "PF_GW": { type: "联结型 > 语言型", ratio: "1:3", move: "预习 → 组局 → 教别人 → 实战", check: "讲一遍给别人听（费曼判据）", parent: "让他当小老师，讲着讲着就真会了" },
+  "PF_GT": { type: "联结型 > 语言型 > 思考型", ratio: "1:4", move: "聊 → 查证 → 动手 → 复盘", check: "用表达把理解定型，能应对追问", parent: "组讨论局，但别让“懂了”冒充“会了”" },
+  "AD_GW": { type: "判别型 > 运动型", ratio: "1:2", move: "找榜样 → 照做 → 撤示范 → 独立", check: "离开示范独立做出成品", parent: "示范一次就收手，让他自己来" },
+  "AD_GT": { type: "判别型 > 联结型", ratio: "1:2", move: "边做边问 → 归类 → 攻克 → 输出", check: "侦探式验证：自己查证并给出结论", parent: "把问题记下来归类，别让主线带偏" },
+  "PD_GW": { type: "判别型 > 联结型", ratio: "1:2", move: "找标杆 → 拆解 → 复刻 → 超越", check: "做出超越样板的新作品", parent: "拆标杆给他看，但要求最后一步必须“超”" },
+  "PD_GT": { type: "思考型 > 语言型 > 联结型", ratio: "1:4", move: "定体系 → 逐项啃 → 实践 → 讲出来", check: "完整体系讲解，经得起降维打击式追问", parent: "安排复盘分享，输出会把知识焊牢" }
 };
 
 /* ===== 数据：通用建议（v1.0 兜底，未选学科时用） ===== */
@@ -1104,6 +1142,33 @@ function renderResult(code, r) {
   lastResult = { code: code, sub: firstSub, subs: selectedSubjects.slice(0), r: r };
 }
 
+/* 方法包渲染（v1.6→PDF 报告页）：按 16 型类型码取 METHOD_PACK 数据，渲染配比大字卡 + 四项列表（供 renderReport 调用） */
+function renderPack(code) {
+  var ratioEl = document.getElementById("repPackRatio");
+  var list = document.getElementById("repPackList");
+  if (!ratioEl || !list) { return; }
+  var key = code.slice(0, 2) + "_" + code.slice(2);
+  var mp = METHOD_PACK[key];
+  if (!mp) { return; }
+
+  ratioEl.innerHTML = '<div class="pr-big">' + mp.ratio + '</div>' +
+    '<div class="pr-sub">上料 : 下料（规则:例子）· 别用讲解填满 TA 的时间</div>';
+
+  list.innerHTML = "";
+  var items = [
+    { tag: "优先学习类型", text: mp.type },
+    { tag: "核心转化动作", text: mp.move },
+    { tag: "验收方式", text: mp.check },
+    { tag: "家长一句话陪法", text: mp.parent }
+  ];
+  for (var i = 0; i < items.length; i++) {
+    var it = document.createElement("div");
+    it.className = "method-item";
+    it.innerHTML = '<div class="m-dot">' + (i + 1) + '</div><p><b>' + items[i].tag + '：</b>' + items[i].text + '</p>';
+    list.appendChild(it);
+  }
+}
+
 /* ===== 档案钩子：保存档案 / 复测 ===== */
 function saveArchive(code, subKey) {
   var rec = {
@@ -1196,6 +1261,9 @@ function renderReport(code, subKey, r) {
   document.getElementById("repPit").textContent = t.pit;
   document.getElementById("repGift").textContent = t.gift;
   document.getElementById("repPath").textContent = t.path;
+
+  /* 章节3.5 方法包：学习观配方按 16 型渲染（随 PDF 报告输出） */
+  renderPack(code);
 
   /* 章节4 学习能量 */
   var sc = document.getElementById("repScores");
